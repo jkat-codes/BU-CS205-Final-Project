@@ -1,0 +1,105 @@
+// Gradle build file
+// CSCI 205 - Software Engineering and Design
+// Bucknell University
+// Author - B. King / L. Romano
+// Update Log
+// 2022-Fall - added javamodularity, updated versions of javafxplugin
+// 2023-Spring - Modified testLogging events
+// 2025-Spring - Updated to prepare for some deprecation
+// 2025-Fall - Temporary disable of javamodularity and doing things the long way
+
+plugins{
+    id 'application'
+    id 'java'
+    id 'idea'
+}
+
+group 'org.team01'
+version '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+// Enable Gradle's built-in module support (javamodularity hotfix)
+java {
+    modularity.inferModulePath = true
+}
+
+run {
+    standardInput = System.in
+}
+
+test {
+    useJUnitPlatform()
+
+    // Force tests to run on classpath instead of module path
+    classpath = testing.suites.test.sources.runtimeClasspath // javamodularity hotfix
+    modularity.inferModulePath = false // javamodularity hotfix
+
+    testLogging {
+        events "passed", "skipped", "failed", "standard_out", "standard_error"
+    }
+}
+
+def osName = System.getProperty("os.name").toLowerCase()
+def platform
+
+if (osName.contains("win")) {
+    platform = "win"
+} else if (osName.contains("mac")) {
+    platform = "mac"
+} else if (osName.contains("linux")) {
+    platform = "linux"
+} else {
+    throw new GradleException("Unsupported OS: $osName")
+}
+
+dependencies {
+    // Updated JUnit dependencies with all necessary components
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0' // javamodularity hotfix
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.0' // javamodularity hotfix
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0' // javamodularity hotfix
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0' // javamodularity hotfix
+
+    implementation "org.openjfx:javafx-controls:21:$platform" // javafx module hotfix
+    implementation "org.openjfx:javafx-fxml:21:$platform" // javafx module hotfix
+    implementation "org.openjfx:javafx-base:21:$platform" // javafx module hotfix
+    implementation "org.openjfx:javafx-graphics:21:$platform" // javafx module hotfix
+}
+
+application {
+    mainModule.set("csci205_jam08_group_project")
+    mainClass.set("org.programmingnoises.Main")
+
+    if (project.hasProperty("mainClass")) {
+        mainClass.set(project.property("mainClass").toString())
+    }
+}
+
+def createJavaFXTask(String taskName, String description, String mainClassName) {
+    tasks.register(taskName, JavaExec) {
+        group = 'application'
+
+        classpath = sourceSets.main.runtimeClasspath
+        mainClass = mainClassName
+        this.description = description
+
+        doFirst {
+            def javafxLibs = configurations.runtimeClasspath
+                    .filter { it.name.contains("javafx") }
+                    .collect { it.parent }
+                    .unique()
+                    .join(File.pathSeparator)
+
+            jvmArgs = [
+                    '--module-path', javafxLibs,
+                    '--add-modules', 'javafx.controls,javafx.fxml'
+            ]
+        }
+    }
+}
+
+//createJavaFXTask('runHelloFX', 'Runs the HelloFX application', 'hw.HelloFX')
+//createJavaFXTask('runHelloMain', 'Runs the HelloMain application', 'hw.HelloMain')
+//createJavaFXTask('runStockVisualizerApp', 'Runs the StockVisualizerApp application', 'hw.StockVisualizerApp')
