@@ -47,7 +47,7 @@ def platform
 
 if (osName.contains("win")) {
     platform = "win"
-} else if (osName.contains("mac")) {
+} else if (osName.contains("mac-arch64")) {
     platform = "mac"
 } else if (osName.contains("linux")) {
     platform = "linux"
