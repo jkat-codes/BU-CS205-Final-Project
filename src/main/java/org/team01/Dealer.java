@@ -10,7 +10,7 @@
  * Package: org.team01
  * Class: Dealer
  *
- * Description:
+ * Description: Representation of a dealer. Has a hand that came be played according to dealer rules.
  *
  * ****************************************
  */
@@ -19,6 +19,10 @@ package org.team01;
 
 import java.util.List;
 
+/**
+ * Representation of a dealer. Has a hand that came
+ * be played according to dealer rules.
+ */
 public class Dealer {
 
     // Hold the cards in the dealer's dealerHand
@@ -27,6 +31,10 @@ public class Dealer {
     public Dealer() {
     }
 
+    /**
+     * Check if dealer to hit
+     * @return true if over 16 and should hit; otherwise false
+     */
     public boolean shouldHit() {
 
         int handValue = dealerHand.getHandValue();
@@ -37,6 +45,10 @@ public class Dealer {
         return false;
     }
 
+    /**
+     * Check whether dealer hand should be revealed
+     * @return true if natural blackjack (21); false otherwise
+     */
     public boolean revealCard() {
         if (dealerHand.size() == 21) {
             return true;
@@ -44,9 +56,11 @@ public class Dealer {
         return false;
     }
 
+    /**
+     * Clear and reset the hand for a new game
+     */
     public void resetHand() {
         dealerHand.clear();
     }
-
 }
 
