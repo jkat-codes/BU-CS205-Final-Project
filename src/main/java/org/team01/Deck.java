@@ -72,8 +72,15 @@ public class Deck {
 
         // Current state is all the suits and values in order from 1 to 13 by suit, we need to shuffle the cards
 
-        // Shuffle the cards
-       Collections.shuffle(cards);
+        // Shuffle the cards using the Fisher-Yates shuffle algorithm
+        for (int j = cards.size() - 1; j > 0; j--) {
+            int index = random.nextInt(0, j);
+            Card temp = cards.get(j);
+            cards.set(j, cards.get(index));
+            cards.set(index, temp);
+        }
+
+        System.out.println(cards);
     }
 
     public int getCardsRemaining() {
@@ -93,5 +100,9 @@ public class Deck {
 
         // Return the top card
         return dealtCard;
+    }
+
+    public List<Card> getCards() {
+        return new ArrayList<>(cards);
     }
 }
