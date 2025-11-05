@@ -30,7 +30,7 @@ public class Deck {
     private List<Card> cards;
 
     public Deck() {
-        this.cards = cards;
+        cards = new ArrayList<>();
     }
 
     public void shuffle2() {
