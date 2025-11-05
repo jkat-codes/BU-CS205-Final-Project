@@ -33,7 +33,7 @@ public class Deck {
         cards = new ArrayList<>();
     }
 
-    public void shuffle2() {
+    public void shuffle() {
         Random random = new Random();
         Suit suit = null;
         int max = 13;
@@ -71,8 +71,27 @@ public class Deck {
         }
 
         // Current state is all the suits and values in order from 1 to 13 by suit, we need to shuffle the cards
+
+        // Shuffle the cards
        Collections.shuffle(cards);
-        System.out.println(cards);
     }
 
+    public int getCardsRemaining() {
+        return cards.size();
+    }
+
+    public Card deal() {
+        if (cards.size() <= 4) {
+            // Get a new dec
+            shuffle();
+        }
+        // Get a card from the top of the deck
+        Card dealtCard = cards.getFirst();
+
+        // Remove the dealt card from the deck
+        cards.removeFirst();
+
+        // Return the top card
+        return dealtCard;
+    }
 }
