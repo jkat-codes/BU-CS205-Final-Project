@@ -15,6 +15,38 @@
  * ****************************************
  */
 
-package PACKAGE_NAME;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.team01.Card;
+import org.team01.Suit;
+
 public class CardTest {
+    private Card card1;
+
+    @BeforeEach
+    void setUp() {
+        card1 = new Card(Suit.SPADES, 5, "Hello");
+    }
+
+    @Test
+    void testSuit() {
+        Suit cardSuit = card1.getSuit();
+        boolean result = cardSuit.equals(Suit.SPADES);
+        assertTrue(result);
+    }
+
+    @Test
+    void testValue() {
+        int value = card1.getValue();
+        boolean result = value == 5;
+        assertTrue(result);
+    }
+
+    @Test
+    void testRank() {
+        //
+    }
 }
