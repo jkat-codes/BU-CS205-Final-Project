@@ -18,9 +18,9 @@
 package org.team01;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 
 /**
  * this is the class skeleton for the Deck class
@@ -32,32 +32,44 @@ public class Deck {
         this.cards = cards;
     }
 
-    public void shuffle(List<Card> c) {
-        int[] repetitions = new int[13];
-        for (int i = 0; i < 52; i++) {
-
-            Random random = new Random();
-            int min = 1;
-            int max = 52;
-
-            int suit = random.nextInt(4);
-            int value = random.nextInt(max - min + 1) + min;
-            String suitName;
-
-            if (suit == 0) {
-                suitName = "Clubs";
-            } else if (suit == 1) {
-                suitName = "Spades";
-            } else if (suit == 2) {
-                suitName = "Hearts";
-            } else {
-                suitName = "Diamonds";
+    public void shuffle2() {
+        Random random = new Random();
+        Suit suit = null;
+        int max = 13;
+        int min = 1;
+        // Iterate through each suit
+        for (int i = 0; i < 4; i++) {
+            List<Integer> numbersAlreadyGenerated = new ArrayList<>();
+            switch (i) {
+                case 0:
+                    suit = Suit.CLUBS;
+                    break;
+                case 1:
+                    suit = Suit.SPADES;
+                    break;
+                case 2:
+                    suit = Suit.HEARTS;
+                    break;
+                case 3:
+                    suit = Suit.DIAMONDS;
+                    break;
+                default:
+                    break;
             }
 
-            Card obj = new Card(suitName, value, "");
-            cards.add(obj);
-        }
-    }
+            int numOfCards = 0;
 
+            while (numOfCards < 13) {
+                int value = random.nextInt(max - min + 1) + min;
+                if (!numbersAlreadyGenerated.contains(value)) {
+                    cards.add(new Card(suit, value, "rank"));
+                    numbersAlreadyGenerated.add(value);
+                    numOfCards++;
+                }
+            }
+        }
+
+        // Current state is all the suits and values in order from 1 to 13 by suit, we need to shuffle the cards
+    }
 
 }
