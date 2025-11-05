@@ -19,6 +19,7 @@ package org.team01;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -28,7 +29,7 @@ import java.util.Random;
 public class Deck {
     private List<Card> cards;
 
-    public Deck(List<Card> cards) {
+    public Deck() {
         this.cards = cards;
     }
 
@@ -70,6 +71,8 @@ public class Deck {
         }
 
         // Current state is all the suits and values in order from 1 to 13 by suit, we need to shuffle the cards
+       Collections.shuffle(cards);
+        System.out.println(cards);
     }
 
 }
