@@ -26,7 +26,7 @@ import java.util.List;
 public class Dealer {
 
     // Hold the cards in the dealer's dealerHand
-    private Hand dealerHand = new Hand();
+    private Hand dealerHand;
 
     public Dealer() {
     }
@@ -48,7 +48,7 @@ public class Dealer {
      */
     public boolean hasNaturalBlackjack() {
         // Add control for state of game/hand to check which state the hand is in
-        return dealerHand.size() == 2 &&
+        return dealerHand.getCurrentHand().size() == 2 &&
                 dealerHand.getHandValue() == 21;
     }
 
