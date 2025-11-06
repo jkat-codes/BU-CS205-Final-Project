@@ -22,7 +22,7 @@ package org.team01;
  * Each card has a suit, rank, and numerical value associated with it
  */
 public class Card {
-    private String suit;
+    private Suit suit;
     private int value;
     private String rank;
 
@@ -32,7 +32,7 @@ public class Card {
      * @param value the numerical value of the card (i.e. 1, 2, 3, ...)
      * @param rank the rank name of the card (i.e. ace, two, three, ..., jack, king, queen)
      */
-    public Card(String suit, int value, String rank) {
+    public Card(Suit suit, int value, String rank) {
         this.suit = suit; // HEARTS, DIAMONDS, CLUBS, SPADES
         this.value = value; // 1, 2, 3, ...
         this.rank = rank; // ACE, TWO, THREE, ...
@@ -43,7 +43,7 @@ public class Card {
      *
      * @return the suit of the Card
      */
-    public String getSuit() {
+    public Suit getSuit() {
         return this.suit;
     }
 
