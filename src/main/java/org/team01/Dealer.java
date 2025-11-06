@@ -52,9 +52,9 @@ public class Dealer {
                 dealerHand.getHandValue() == 21;
     }
 
-    public void playDealerTurn() {
+    public void playDealerTurn(Card card) {
         while (shouldHit()) {
-            dealerHand.addCardToHand();
+            dealerHand.addCardToHand(card);
         }
     }
 
