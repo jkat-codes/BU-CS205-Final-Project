@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Player {
     private String name;
-    private int balance;
+    private int balance = 2000;
     private List<Card> currentHand;
     private int currentBet;
 
@@ -29,7 +29,7 @@ public class Player {
      * Public constructor for Player with the specified name and balance
      *
      */
-    public Player(String name, int balance) {
+    public Player(String name) {
         this.name = name;
         this.balance = balance;
         this.currentHand = currentHand;
