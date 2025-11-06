@@ -18,19 +18,18 @@
 package org.team01;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * this is the class skeleton for the Deck class
  */
 public class Deck {
     private List<Card> cards;
+    private List<FaceValue> FaceValues;
 
     public Deck() {
         cards = new ArrayList<>();
+        FaceValues = new ArrayList<>(Arrays.asList(null, FaceValue.ACE, FaceValue.TWO, FaceValue.THREE, FaceValue.FOUR, FaceValue.FIVE, FaceValue.SIX, FaceValue.SEVEN, FaceValue.EIGHT, FaceValue.NINE, FaceValue.TEN, FaceValue.JACK, FaceValue.QUEEN, FaceValue.KING));
     }
 
     public void shuffle() {
@@ -60,13 +59,8 @@ public class Deck {
 
             int numOfCards = 0;
 
-            while (numOfCards < 13) {
-                int value = random.nextInt(max - min + 1) + min;
-                if (!numbersAlreadyGenerated.contains(value)) {
-                    cards.add(new Card(suit, value, "rank"));
-                    numbersAlreadyGenerated.add(value);
-                    numOfCards++;
-                }
+            for (int k = 1; k <= 13; k++) {
+                cards.add(new Card(suit, k, FaceValues.get(k)));
             }
         }
 
@@ -104,5 +98,9 @@ public class Deck {
 
     public List<Card> getCards() {
         return new ArrayList<>(cards);
+    }
+
+    public Card get(int i) {
+        return cards.get(i);
     }
 }
