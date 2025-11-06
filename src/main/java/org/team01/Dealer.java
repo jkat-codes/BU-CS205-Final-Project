@@ -26,7 +26,7 @@ import java.util.List;
 public class Dealer {
 
     // Hold the cards in the dealer's dealerHand
-    private Hand dealerHand = Hand();
+    private Hand dealerHand = new Hand();
 
     public Dealer() {
     }
@@ -39,10 +39,23 @@ public class Dealer {
 
         int handValue = dealerHand.getHandValue();
 
-        if (handValue <= 16) {
-            return true;
+        return handValue <= 16;
+    }
+
+    /**
+     * Check if dealer has a natural blackjack
+     * @return true if natural blackjack; otherwise false
+     */
+    public boolean hasNaturalBlackjack() {
+        // Add control for state of game/hand to check which state the hand is in
+        return dealerHand.size() == 2 &&
+                dealerHand.getHandValue() == 21;
+    }
+
+    public void playDealerTurn() {
+        while (shouldHit()) {
+            dealerHand.addCardToHand();
         }
-        return false;
     }
 
     /**
@@ -50,17 +63,33 @@ public class Dealer {
      * @return true if natural blackjack (21); false otherwise
      */
     public boolean revealCard() {
-        if (dealerHand.size() == 21) {
-            return true;
-        }
-        return false;
+        return dealerHand.getHandValue() == 21;
     }
 
     /**
      * Clear and reset the hand for a new game
      */
     public void resetHand() {
-        dealerHand.clear();
+        // Add control for state of game/hand to be "reset-able"
+        dealerHand.clearHand();
+    }
+
+    // Getters
+
+    /**
+     * Get dealer's hand
+     * @return Hand of dealer
+     */
+    public Hand getHand() {
+        return dealerHand;
+    }
+
+    /**
+     * Get value of dealer's hand
+     * @return int value of hand
+     */
+    public int getHandValue() {
+        return dealerHand.getHandValue();
     }
 }
 
