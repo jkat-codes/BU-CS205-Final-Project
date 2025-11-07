@@ -1,4 +1,4 @@
-/* *****************************************
+package org.team01;/* *****************************************
  * CSCI 205 - Software Engineering and Design
  * Spring 2025
  *
@@ -21,6 +21,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.team01.Card;
+import org.team01.FaceValue;
 import org.team01.Suit;
 
 public class CardTest {
@@ -28,7 +29,7 @@ public class CardTest {
 
     @BeforeEach
     void setUp() {
-        card1 = new Card(Suit.SPADES, 5, "Hello");
+        card1 = new Card(Suit.SPADES, 5, FaceValue.KING);
     }
 
     @Test
@@ -47,6 +48,8 @@ public class CardTest {
 
     @Test
     void testRank() {
-        //
+        FaceValue value = FaceValue.KING;
+        boolean result = card1.getRank() == value;
+        assertTrue(result);
     }
 }
