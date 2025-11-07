@@ -74,7 +74,6 @@ public class Deck {
             cards.set(index, temp);
         }
 
-        System.out.println(cards);
     }
 
     public int getCardsRemaining() {
