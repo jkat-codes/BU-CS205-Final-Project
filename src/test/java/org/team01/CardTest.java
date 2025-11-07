@@ -52,4 +52,19 @@ public class CardTest {
         boolean result = card1.getRank() == value;
         assertTrue(result);
     }
+
+    @Test
+    void testHigherValues() {
+        Card king = new Card(Suit.SPADES, 10, FaceValue.KING);
+        Card queen = new Card(Suit.SPADES, 10, FaceValue.KING);
+        Card jack = new Card(Suit.SPADES, 10, FaceValue.JACK);
+
+        boolean kingValue = king.getValue() == 10;
+        boolean queenValue = queen.getValue() == 10;
+        boolean jackValue = jack.getValue() == 10;
+
+        assertTrue(kingValue);
+        assertTrue(queenValue);
+        assertTrue(jackValue);
+    }
 }
