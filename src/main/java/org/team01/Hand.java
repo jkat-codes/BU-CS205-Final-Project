@@ -25,7 +25,7 @@ public class Hand {
     private List<Card> cards;
 
     public Hand() {
-
+        this.cards = new ArrayList<>();
     }
 
     public void addCardToHand(Card card) {

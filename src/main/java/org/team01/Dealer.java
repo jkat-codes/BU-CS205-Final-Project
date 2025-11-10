@@ -17,6 +17,7 @@
 
 package org.team01;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,7 @@ public class Dealer {
 
     // Hold the cards in the dealer's dealerHand
     private Hand dealerHand;
+    private List<Card> currentHand;
 
     public Dealer() {
     }
@@ -90,6 +92,10 @@ public class Dealer {
      */
     public int getHandValue() {
         return dealerHand.getHandValue();
+    }
+
+    public void addCardToHand(Card card) {
+        dealerHand.addCardToHand(card);
     }
 }
 
