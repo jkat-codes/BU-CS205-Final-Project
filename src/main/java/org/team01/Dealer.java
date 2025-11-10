@@ -50,10 +50,12 @@ public class Dealer extends Participant {
                 hand.getHandValue() == 21;
     }
 
-    public void playDealerTurn(Card card) {
-        while (shouldHit()) {
+    public boolean playDealerTurn(Card card) {
+        if (shouldHit()) {
             hand.addCardToHand(card);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -61,16 +63,8 @@ public class Dealer extends Participant {
      *
      * @return true if natural blackjack (21); false otherwise
      */
-    public boolean revealCard() {
+    public boolean shouldRevealCard() {
         return hand.getHandValue() == 21;
-    }
-
-    /**
-     * Clear and reset the hand for a new game
-     */
-    public void resetHand() {
-        // Add control for state of game/hand to be "reset-able"
-        hand.clearHand();
     }
 }
 
