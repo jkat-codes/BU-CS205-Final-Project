@@ -27,7 +27,6 @@ import static org.team01.Suit.*;
 
 public class PlayerTest {
     private Player player;
-    private Dealer dealer;
     @BeforeEach
     public void setPlayer() {
         player = new Player("Jane Doe");
@@ -48,26 +47,5 @@ public class PlayerTest {
 
         assertThrows(IllegalArgumentException.class, () -> player.placeBet(3000));
     }
-
-//    @Test
-//    public void testWon() {
-//        // Add cards to player and dealer
-//        Card card1 = new Card(HEARTS,10,"QUEEN");
-//        Card card2 = new Card(SPADES, 4,"FOUR");
-//        Card card3 = new Card(DIAMONDS, 9, "NINE");
-//        Card card4 = new Card(CLUBS, 8, "EIGHT");
-//        Card card5 = new Card(SPADES, 10, "KING");
-//
-//        player.addCardToHand(card1);
-//        player.addCardToHand(card3);
-//
-//        dealer.addCardToHand(card2);
-//        dealer.addCardToHand(card4);
-//
-//        assertTrue(player.won());
-//
-//    }
-
-
 }
 
