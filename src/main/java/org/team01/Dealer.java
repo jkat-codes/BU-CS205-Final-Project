@@ -17,85 +17,55 @@
 
 package org.team01;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Representation of a dealer. Has a hand that came
- * be played according to dealer rules.
+ * Representation of a dealer. Has a hand that came be played according to dealer rules.
  */
-public class Dealer {
+public class Dealer extends Participant {
 
     // Hold the cards in the dealer's dealerHand
-    private Hand dealerHand;
-    private List<Card> currentHand;
 
     public Dealer() {
     }
 
     /**
      * Check if dealer to hit
+     *
      * @return true if over 16 and should hit; otherwise false
      */
     public boolean shouldHit() {
 
-        int handValue = dealerHand.getHandValue();
+        int handValue = hand.getHandValue();
 
         return handValue <= 16;
     }
 
     /**
      * Check if dealer has a natural blackjack
+     *
      * @return true if natural blackjack; otherwise false
      */
     public boolean hasNaturalBlackjack() {
         // Add control for state of game/hand to check which state the hand is in
-        return dealerHand.getCurrentHand().size() == 2 &&
-                dealerHand.getHandValue() == 21;
+        return hand.getCurrentHand().size() == 2 &&
+                hand.getHandValue() == 21;
     }
 
-    public void playDealerTurn(Card card) {
-        while (shouldHit()) {
-            dealerHand.addCardToHand(card);
+    public boolean playDealerTurn(Card card) {
+        if (shouldHit()) {
+            hand.addCardToHand(card);
+            return true;
         }
+        return false;
     }
 
     /**
      * Check whether dealer hand should be revealed
+     *
      * @return true if natural blackjack (21); false otherwise
      */
-    public boolean revealCard() {
-        return dealerHand.getHandValue() == 21;
-    }
-
-    /**
-     * Clear and reset the hand for a new game
-     */
-    public void resetHand() {
-        // Add control for state of game/hand to be "reset-able"
-        dealerHand.clearHand();
-    }
-
-    // Getters
-
-    /**
-     * Get dealer's hand
-     * @return Hand of dealer
-     */
-    public Hand getHand() {
-        return dealerHand;
-    }
-
-    /**
-     * Get value of dealer's hand
-     * @return int value of hand
-     */
-    public int getHandValue() {
-        return dealerHand.getHandValue();
-    }
-
-    public void addCardToHand(Card card) {
-        dealerHand.addCardToHand(card);
+    public boolean shouldRevealCard() {
+        return hand.getHandValue() == 21;
     }
 }
+
 

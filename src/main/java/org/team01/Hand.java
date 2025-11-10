@@ -25,6 +25,7 @@ public class Hand {
     private List<Card> cards;
 
     public Hand() {
+        cards = new ArrayList<>();
 
     }
 
@@ -90,11 +91,14 @@ public class Hand {
     }
 
     public String toString() {
+        if (cards.isEmpty()) {
+            return "[]";
+        }
         String handString = "[";
         for (Card card : cards) {
-            handString += card.toString() + " ";
+            handString += card.toString() + ", ";
         }
-        handString = handString.trim() + "]";
+        handString = handString.substring(0, handString.length() - 2) + "]";
         return handString;
     }
 }

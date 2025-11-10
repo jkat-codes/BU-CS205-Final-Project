@@ -18,29 +18,45 @@
 package org.team01;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * this is the class skeleton for the Deck class
  */
 public class Deck {
     private List<Card> cards;
+    private List<FaceValue> FaceValues;
 
     public Deck() {
         cards = new ArrayList<>();
+        FaceValues = new ArrayList<>(Arrays.asList(null, FaceValue.ACE, FaceValue.TWO, FaceValue.THREE, FaceValue.FOUR, FaceValue.FIVE, FaceValue.SIX, FaceValue.SEVEN, FaceValue.EIGHT, FaceValue.NINE, FaceValue.TEN, FaceValue.JACK, FaceValue.QUEEN, FaceValue.KING));
     }
 
     public void shuffle() {
+        // Creates if deck is empty
+        createDeck();
+
+        // Current state is all the suits and values in order from 1 to 13 by suit, we need to shuffle the cards
+        // Shuffle the cards using the Fisher-Yates shuffle algorithm
         Random random = new Random();
+        for (int j = cards.size() - 1; j > 0; j--) {
+            int index = random.nextInt(0, j);
+            Card temp = cards.get(j);
+            cards.set(j, cards.get(index));
+            cards.set(index, temp);
+        }
+
+    }
+
+    private void createDeck() {
+        // Only create the deck if its currently empty
+        if (!cards.isEmpty()) {
+            return;
+        }
+
         Suit suit = null;
-        int max = 13;
-        int min = 1;
         // Iterate through each suit
         for (int i = 0; i < 4; i++) {
-            List<Integer> numbersAlreadyGenerated = new ArrayList<>();
             switch (i) {
                 case 0:
                     suit = Suit.CLUBS;
@@ -58,29 +74,10 @@ public class Deck {
                     break;
             }
 
-            int numOfCards = 0;
-
-            while (numOfCards < 13) {
-                int value = random.nextInt(max - min + 1) + min;
-                if (!numbersAlreadyGenerated.contains(value)) {
-                    cards.add(new Card(suit, value, "rank"));
-                    numbersAlreadyGenerated.add(value);
-                    numOfCards++;
-                }
+            for (int k = 1; k <= 13; k++) {
+                cards.add(new Card(suit, k, FaceValues.get(k)));
             }
         }
-
-        // Current state is all the suits and values in order from 1 to 13 by suit, we need to shuffle the cards
-
-        // Shuffle the cards using the Fisher-Yates shuffle algorithm
-        for (int j = cards.size() - 1; j > 0; j--) {
-            int index = random.nextInt(0, j);
-            Card temp = cards.get(j);
-            cards.set(j, cards.get(index));
-            cards.set(index, temp);
-        }
-
-        System.out.println(cards);
     }
 
     public int getCardsRemaining() {
@@ -88,8 +85,8 @@ public class Deck {
     }
 
     public Card deal() {
-        if (cards.size() <= 4) {
-            // Get a new dec
+        if (cards.isEmpty()) {
+            // Creates and shuffles a new deck
             shuffle();
         }
         // Get a card from the top of the deck
@@ -104,5 +101,13 @@ public class Deck {
 
     public List<Card> getCards() {
         return new ArrayList<>(cards);
+    }
+
+    public Card get(int index) {
+        if (index >= cards.size() || index < 0) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+
+        return cards.get(index);
     }
 }

@@ -24,7 +24,7 @@ package org.team01;
 public class Card {
     private Suit suit;
     private int value;
-    private String rank;
+    private FaceValue rank;
 
     /**
      * Constructs a new Card with the specified suit, value, and rank
@@ -32,7 +32,7 @@ public class Card {
      * @param value the numerical value of the card (i.e. 1, 2, 3, ...)
      * @param rank the rank name of the card (i.e. ace, two, three, ..., jack, king, queen)
      */
-    public Card(Suit suit, int value, String rank) {
+    public Card(Suit suit, int value, FaceValue rank) {
         this.suit = suit; // HEARTS, DIAMONDS, CLUBS, SPADES
         this.value = value; // 1, 2, 3, ...
         this.rank = rank; // ACE, TWO, THREE, ...
@@ -59,9 +59,9 @@ public class Card {
     /**
      * Gets the rank of the Card
      *
-     * @return the rank of the Card as a String
+     * @return the rank of the Card as a FaceValue enum
      */
-    public String getRank() {
+    public FaceValue getRank() {
         return this.rank;
     }
 
