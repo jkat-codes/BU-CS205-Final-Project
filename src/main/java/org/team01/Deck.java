@@ -33,13 +33,30 @@ public class Deck {
     }
 
     public void shuffle() {
+        createDeck();
+
+        // Current state is all the suits and values in order from 1 to 13 by suit, we need to shuffle the cards
+        // Shuffle the cards using the Fisher-Yates shuffle algorithm
         Random random = new Random();
+        for (int j = cards.size() - 1; j > 0; j--) {
+            int index = random.nextInt(0, j);
+            Card temp = cards.get(j);
+            cards.set(j, cards.get(index));
+            cards.set(index, temp);
+        }
+
+    }
+
+    private void createDeck() {
+
+        // Only create the deck if its currently empty
+        if (!cards.isEmpty()) {
+            return;
+        }
+
         Suit suit = null;
-        int max = 13;
-        int min = 1;
         // Iterate through each suit
         for (int i = 0; i < 4; i++) {
-            List<Integer> numbersAlreadyGenerated = new ArrayList<>();
             switch (i) {
                 case 0:
                     suit = Suit.CLUBS;
@@ -57,23 +74,10 @@ public class Deck {
                     break;
             }
 
-            int numOfCards = 0;
-
             for (int k = 1; k <= 13; k++) {
                 cards.add(new Card(suit, k, FaceValues.get(k)));
             }
         }
-
-        // Current state is all the suits and values in order from 1 to 13 by suit, we need to shuffle the cards
-
-        // Shuffle the cards using the Fisher-Yates shuffle algorithm
-        for (int j = cards.size() - 1; j > 0; j--) {
-            int index = random.nextInt(0, j);
-            Card temp = cards.get(j);
-            cards.set(j, cards.get(index));
-            cards.set(index, temp);
-        }
-
     }
 
     public int getCardsRemaining() {
