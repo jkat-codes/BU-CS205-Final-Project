@@ -21,7 +21,7 @@ package org.team01;
 import java.util.*;
 
 /**
- * this is the class skeleton for the Deck class
+ * Represents a deck of cards
  */
 public class Deck {
     private List<Card> cards;
@@ -75,7 +75,11 @@ public class Deck {
             }
 
             for (int k = 1; k <= 13; k++) {
-                cards.add(new Card(suit, k, FaceValues.get(k)));
+                if (k > 10) {
+                    cards.add(new Card(suit, 10, FaceValues.get(k)));
+                } else {
+                    cards.add(new Card(suit, k, FaceValues.get(k)));
+                }
             }
         }
     }
