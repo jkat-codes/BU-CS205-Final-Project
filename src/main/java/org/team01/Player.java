@@ -19,7 +19,7 @@ package org.team01;
 
 import java.util.List;
 
-public class Player {
+public class Player extends Participant {
     private String name;
     private int balance;
     private List<Card> currentHand;
@@ -30,9 +30,9 @@ public class Player {
      *
      */
     public Player(String name, int balance) {
+        super();
         this.name = name;
         this.balance = balance;
-        this.currentHand = currentHand;
         this.currentBet = currentBet;
     }
 
@@ -98,10 +98,6 @@ public class Player {
      */
     public int getCurrentBalance() {
         return balance;
-    }
-
-    public void resetHand() {
-        currentHand.clear();
     }
 
 }
