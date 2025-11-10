@@ -25,6 +25,7 @@ public class Dealer extends Participant {
     // Hold the cards in the dealer's dealerHand
 
     public Dealer() {
+        super();
     }
 
     /**
@@ -66,6 +67,11 @@ public class Dealer extends Participant {
     public boolean shouldRevealCard() {
         return hand.getHandValue() == 21;
     }
+
+    public int getFirstCard() {
+        return hand.getCurrentHand().get(0).getValue();
+    }
+
 }
 
 
