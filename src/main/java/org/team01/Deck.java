@@ -33,6 +33,7 @@ public class Deck {
     }
 
     public void shuffle() {
+        // Creates if deck is empty
         createDeck();
 
         // Current state is all the suits and values in order from 1 to 13 by suit, we need to shuffle the cards
@@ -48,7 +49,6 @@ public class Deck {
     }
 
     private void createDeck() {
-
         // Only create the deck if its currently empty
         if (!cards.isEmpty()) {
             return;
@@ -85,8 +85,8 @@ public class Deck {
     }
 
     public Card deal() {
-        if (cards.size() <= 4) {
-            // Get a new dec
+        if (cards.isEmpty()) {
+            // Creates and shuffles a new deck
             shuffle();
         }
         // Get a card from the top of the deck
@@ -103,7 +103,11 @@ public class Deck {
         return new ArrayList<>(cards);
     }
 
-    public Card get(int i) {
-        return cards.get(i);
+    public Card get(int index) {
+        if (index >= cards.size() || index < 0) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+
+        return cards.get(index);
     }
 }
