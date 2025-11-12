@@ -41,11 +41,19 @@ public class PlayerTest {
     @Test
     public void testplaceBet() throws IllegalArgumentException {
         player.placeBet(500);
-        assertEquals(1500,player.getBalance());
+        assertEquals(1500,player.getCurrentBalance());
 
         player.resetHand();
 
         assertThrows(IllegalArgumentException.class, () -> player.placeBet(3000));
+    }
+
+    @Test
+    public void testgetCurrentBet() {
+        assertEquals(0,player.getCurrentBet());
+
+        player.placeBet(1000);
+        assertEquals(1000,player.getCurrentBet());
     }
 }
 

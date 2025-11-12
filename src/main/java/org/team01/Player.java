@@ -63,11 +63,11 @@ public class Player extends Participant {
     }
 
     /**
-     * Identify balance of the player
-     * @return player's balance
+     * Getter method for current Bet value
+     * @return player's current bet value
      */
-    public int getBalance() {
-        return balance;
+    public int getCurrentBet() {
+        return currentBet;
     }
 }
 
