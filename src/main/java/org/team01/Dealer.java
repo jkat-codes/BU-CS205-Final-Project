@@ -22,9 +22,8 @@ package org.team01;
  */
 public class Dealer extends Participant {
 
-    // Hold the cards in the dealer's dealerHand
-
     public Dealer() {
+        // create a hand for Dealer from Participant constructor
     }
 
     /**
@@ -35,7 +34,6 @@ public class Dealer extends Participant {
     public boolean shouldHit() {
 
         int handValue = hand.getHandValue();
-
         return handValue <= 16;
     }
 
@@ -50,6 +48,12 @@ public class Dealer extends Participant {
                 hand.getHandValue() == 21;
     }
 
+    /**
+     * If dealer is able to take a turn, take in a card
+     *
+     * @param card the card to add
+     * @return true if able to play or add; otherwise false
+     */
     public boolean playDealerTurn(Card card) {
         if (shouldHit()) {
             hand.addCardToHand(card);
