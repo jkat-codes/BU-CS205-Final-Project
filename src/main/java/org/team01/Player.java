@@ -66,6 +66,15 @@ public class Player extends Participant {
     }
 
     /**
+     * Gets the current active bet
+     *
+     * @return double representation of the player's bet
+     */
+    public double getCurrentBet() {
+        return this.currentBet;
+    }
+
+    /**
      * Resets bet amount to 0 if there is an active bet
      *
      * @return true if the bet is successfully reset, false otherwise
@@ -109,6 +118,10 @@ public class Player extends Participant {
 
         // Pay the player
         this.balance += payout;
+
+        // Reset the current bet
+        resetBet();
+
         return true;
     }
 }
