@@ -40,59 +40,6 @@ public class Player extends Participant {
     }
 
     /**
-     * Check who won the game between player and dealer
-     * Either side with closer value to 21 wins
-     * @return true if player won, false otherwise
-     */
-    public boolean won() {
-        int total = 0;
-        int dealertotal = 0;
-        // Obtain total value from player card
-        for (Card card : currentHand) {
-            total += card.getValue();
-        }
-        // Obtain total value from dealer card
-
-        // Check if the total is over 21
-//        if (isBust() == true) {
-//            return false;
-//        }
-
-        // Compare distance to 21 between player and dealer
-        int playerval = Math.abs(21-total);
-        int dealerval = Math.abs(21-dealertotal);
-
-        if (playerval < dealerval) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check who lost the game between player and dealer
-     * Either side with value farther from 21 loses
-     * @return true if player lost, false otherwise
-     */
-    public boolean lost() {
-        int total = 0;
-        int dealertotal = 0;
-        // Obtain total value from player card
-        for (Card card : currentHand) {
-            total += card.getValue();
-        }
-        // Obtain total value from dealer card
-
-        // Compare distance to 21 between player and dealer
-        int playerval = Math.abs(21-total);
-        int dealerval = Math.abs(21-dealertotal);
-
-        if (playerval > dealerval) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Getter method for balance
      * @return player's balance
      */
