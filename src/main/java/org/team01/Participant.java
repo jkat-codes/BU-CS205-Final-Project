@@ -51,6 +51,10 @@ public abstract class Participant {
         return hand;
     }
 
+    public void addCardToHand(Card card) {
+        hand.addCardToHand(card);
+    }
+
     /**
      * Check if participant has a blackjack
      * @return true if blackjack; otherwise false

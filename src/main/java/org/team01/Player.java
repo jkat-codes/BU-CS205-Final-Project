@@ -17,22 +17,24 @@
 
 package org.team01;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Participant {
     private String name;
     private int balance = 2000;
     private int currentBet;
-    private Hand playerHand;
 
     /**
      * Public constructor for Player with the specified name and balance
      *
      */
     public Player(String name) {
+        super();
         this.name = name;
+        this.balance = balance;
+        this.currentBet = currentBet;
     }
+
 
     /**
      * Identify the amount of bet and the balance after placing the bet

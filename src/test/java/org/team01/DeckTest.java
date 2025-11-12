@@ -149,4 +149,15 @@ class DeckTest {
         // After deal the deck should recreate itself and deal the first card
         assertEquals(51, test.getCards().size());
     }
+
+    @Test void testAllFaceCards() {
+        Deck test = new Deck();
+        test.shuffle();
+        for (int i = 0; i <= 52; i++) {
+            Card card = test.deal();
+            if (card.getRank().equals(FaceValue.KING) || card.getRank().equals(FaceValue.QUEEN) || card.getRank().equals(FaceValue.JACK)) {
+                assertEquals(10, card.getValue());
+            }
+        }
+    }
 }
