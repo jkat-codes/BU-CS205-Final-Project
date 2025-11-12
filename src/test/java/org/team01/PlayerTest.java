@@ -108,5 +108,13 @@ public class PlayerTest {
             assertFalse(test.payPlayer(randomMultiplier));
         }
     }
+
+    @Test
+    public void testInvalidBetReset() {
+        Player test = new Player("test");
+
+        // No active bet
+        assertFalse(test.resetBet());
+    }
 }
 
