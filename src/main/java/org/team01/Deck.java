@@ -27,11 +27,17 @@ public class Deck {
     private List<Card> cards;
     private List<FaceValue> FaceValues;
 
+    /**
+     * Creates a new empty Deck
+     */
     public Deck() {
         cards = new ArrayList<>();
         FaceValues = new ArrayList<>(Arrays.asList(null, FaceValue.ACE, FaceValue.TWO, FaceValue.THREE, FaceValue.FOUR, FaceValue.FIVE, FaceValue.SIX, FaceValue.SEVEN, FaceValue.EIGHT, FaceValue.NINE, FaceValue.TEN, FaceValue.JACK, FaceValue.QUEEN, FaceValue.KING));
     }
 
+    /**
+     * Creates a deck of cards (if needed) and shuffles then according to the Fisher-Yates algorithm
+     */
     public void shuffle() {
         // Creates if deck is empty
         createDeck();
@@ -48,6 +54,9 @@ public class Deck {
 
     }
 
+    /**
+     * Creates a deck with 13 unique cards in each of the 4 suits
+     */
     private void createDeck() {
         // Only create the deck if its currently empty
         if (!cards.isEmpty()) {
@@ -84,10 +93,20 @@ public class Deck {
         }
     }
 
+    /**
+     * Gets the remaining cards in the deck
+     *
+     * @return the number of cards still in the deck
+     */
     public int getCardsRemaining() {
         return cards.size();
     }
 
+    /**
+     * Deals one card from the top of the deck and removes it accordingly
+     *
+     * @return the Card from the top of the deck
+     */
     public Card deal() {
         if (cards.isEmpty()) {
             // Creates and shuffles a new deck
@@ -103,10 +122,21 @@ public class Deck {
         return dealtCard;
     }
 
+    /**
+     * Gets the current list of cards that are in the deck (gets the deck)
+     *
+     * @return a (protected) new list of the cards in the deck
+     */
     public List<Card> getCards() {
         return new ArrayList<>(cards);
     }
 
+    /**
+     * Get method to index a card in the deck
+     *
+     * @param index the index of which card we are querying
+     * @return the Card at that index, throws IndexOutOfBoundsException if the index is invalid
+     */
     public Card get(int index) {
         if (index >= cards.size() || index < 0) {
             throw new IndexOutOfBoundsException("Invalid index: " + index);
