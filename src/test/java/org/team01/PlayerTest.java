@@ -61,6 +61,7 @@ public class PlayerTest {
     @Test
     public void testPayoutPlayer() {
         double balance = player.getCurrentBalance();
+        double currentBet = player.getCurrentBet();
 
         // Test payout with no active bet
         assertFalse(player.payPlayer(1));
@@ -70,17 +71,24 @@ public class PlayerTest {
         // Simulates a tie (push)
         player.payPlayer(1);
         assertEquals(2000, player.getCurrentBalance());
+        // Ensure bet is reset
+        assertEquals(0, currentBet);
+
 
         player.placeBet(1000);
         // Simulates a win (dealer bust) (2:1 payout)
         player.payPlayer(2);
         assertEquals(3000, player.getCurrentBalance());
+        // Ensure bet is reset
+        assertEquals(0, currentBet);
 
         player.placeBet(1000);
         double balanceBeforeBlackJack = player.getCurrentBalance();
         // Simulates a BlackJack (3:2 payout)
         player.payPlayer(2.5); // Lossy int conversion
 
+        // Ensure bet is reset
+        assertEquals(0, currentBet);
         assertEquals(4500, player.getCurrentBalance());
         assertEquals(4500, balanceBeforeBlackJack + (1000 * 2.5));
     }
