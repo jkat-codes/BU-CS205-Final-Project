@@ -27,11 +27,20 @@ public class Game {
         Dealer dealer = new Dealer();
         String newGame = "y";
 
+        // Welcome user and present balance
+        System.out.println("Welcome User!");
+        System.out.println("--Account Balance--");
+        System.out.println("$" + player.getCurrentBalance());
+        System.out.println("\n\n");
+
         // Setup and shuffle deck
         deck.shuffle();
 
         while(newGame.trim().equalsIgnoreCase("y")) {
             boolean gameOver = false;
+
+            // Ask for player bet here
+            player.placeBet(5);
 
             // Deal the initial cards
             dealInitialCards(deck, dealer, player, gameOver);
@@ -53,11 +62,25 @@ public class Game {
                     // Check for bust
                     if (player.getHandValue() > 21) {
                         System.out.println("Player bust with: " + player.getHandValue());
+                        // Player lost, reset bet and update balance
+                        player.payPlayer(0);
+                        gameOver = true;
+                        // Clear both hands
+                        dealer.resetHand();
+                        player.resetHand();
+
                         break;
                     }
                     // Check for blackjack
                     if (player.hasBlackjack()) {
                         System.out.println("BlackJack! Player has won!");
+                        // Player won, reset bet and update balance
+                        player.payPlayer(2.5);
+                        gameOver = true;
+                        // Clear both hands
+                        dealer.resetHand();
+                        player.resetHand();
+
                         break;
                     }
 
@@ -86,6 +109,9 @@ public class Game {
             dealer.resetHand();
             player.resetHand();
 
+            // Show current balance
+            System.out.println("\n\nPlayer balance: $" + player.getCurrentBalance());
+
             System.out.print("Play again? [y/n]: ");
             newGame = scan.next();
         }
@@ -103,14 +129,17 @@ public class Game {
         // Immediately check for blackjack
         if (player.hasBlackjack() && dealer.hasBlackjack()) {
             System.out.println("Both have BlackJack! - Push");
+            player.payPlayer(1);
             gameState = true;
             clearHands(player, dealer);
         } else if (player.hasBlackjack()) {
             System.out.println("Player has BlackJack! Player wins!");
+            player.payPlayer(2.5);
             gameState = true;
             clearHands(player, dealer);
         } else if (dealer.hasBlackjack()) {
             System.out.println("Dealer has BlackJack. Dealer wins.");
+            player.payPlayer(0);
             gameState = true;
             clearHands(player, dealer);
         }
@@ -126,13 +155,21 @@ public class Game {
         int dealerValue = dealer.getHandValue();
 
         if (dealer.hand.isBust()) {
-            System.out.println("Dealer bust! Player wins!");
+            System.out.println("\n\nDealer bust! Player wins!");
+            // Player wins, reset bet and update balance
+            player.payPlayer(2.0);
         } else if (playerValue > dealerValue) {
-            System.out.println("Player wins with " + playerValue + " vs " + dealerValue);
+            System.out.println("\n\nPlayer wins with " + playerValue + " vs " + dealerValue);
+            // Player wins, reset bet and update balance
+            player.payPlayer(2.0);
         } else if (dealerValue > playerValue) {
-            System.out.println("Dealer wins with " + dealerValue + " vs " + playerValue);
+            System.out.println("\n\nDealer wins with " + dealerValue + " vs " + playerValue);
+            // Dealer wins, reset bet and update balance
+            player.payPlayer(0);
         } else {
-            System.out.println("Tie (Push) Both have " + playerValue);
+            System.out.println("\n\nTie (Push) Both have " + playerValue);
+            // Tie, reset bet and update balance
+            player.payPlayer(1.0);
         }
 
         clearHands(player, dealer);
