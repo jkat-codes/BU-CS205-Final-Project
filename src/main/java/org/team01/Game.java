@@ -22,7 +22,7 @@ public class Game {
     private Deck deck;
     private Player player;
     private Dealer dealer;
-    private static GameState state = GameState.MENU;
+    private GameState state = GameState.MENU;
 
     public Game() {
         this.deck = new Deck();
@@ -50,7 +50,9 @@ public class Game {
     }
 
     public boolean startNewRound() {
-        // TODO: Make sure there are enough cards in the deck (already done in the deck class)
+        if (state != GameState.BETTING) {
+            return false;
+        }
 
         // Reset hands
         player.resetHand();
@@ -111,7 +113,6 @@ public class Game {
             return null;
         }
 
-        // Deal card to player
         player.addCardToHand(deck.deal());
 
         if (player.getHandValue() > 21) {
