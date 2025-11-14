@@ -19,164 +19,182 @@ package org.team01;
 import java.util.Scanner;
 
 public class Game {
+    private Deck deck;
+    private Player player;
+    private Dealer dealer;
+    private static GameState state = GameState.MENU;
 
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        Deck deck = new Deck();
-        Player player = new Player("P1");
-        Dealer dealer = new Dealer();
-        String newGame = "y";
+    public Game() {
+        this.deck = new Deck();
+        this.player = new Player("P1");
+        this.dealer = new Dealer();
+    }
 
-        // Welcome user and present balance
-        System.out.println("Welcome User!");
-        System.out.println("--Account Balance--");
-        System.out.println("$" + player.getCurrentBalance());
-        System.out.println("\n\n");
+    public boolean initializeNewGame() {
+        // Check game state to make sure that there is no other game in play
+        if (state != GameState.MENU && state != GameState.GAME_OVER) {
+            return false;
+        }
 
         // Setup and shuffle deck
-        deck.shuffle();
+        this.deck.shuffle();
 
-        while(newGame.trim().equalsIgnoreCase("y")) {
-            boolean gameOver = false;
+        // Reset hands (regardless of previous play)
+        player.resetHand();
+        dealer.resetHand();
 
-            // Ask for player bet here
-            player.placeBet(5);
+        // Shift state to betting
+        state = GameState.BETTING;
 
-            // Deal the initial cards
-            dealInitialCards(deck, dealer, player, gameOver);
-
-            // Player turn
-            while (!gameOver) {
-                System.out.print("Hit or Stand? [y/n]: ");
-                String response = scan.next();
-
-                // Hit until satisfied or bust
-                while (response.trim().equalsIgnoreCase("y")) {
-                    // Add card to hand
-                    player.addCardToHand(deck.deal());
-
-                    // Show card
-                    System.out.println("Player hand: " + player.getHand());
-                    System.out.println("Player has: " + player.getHandValue());
-
-                    // Check for bust
-                    if (player.getHandValue() > 21) {
-                        System.out.println("Player bust with: " + player.getHandValue());
-                        // Player lost, reset bet and update balance
-                        player.payPlayer(0);
-                        gameOver = true;
-                        // Clear both hands
-                        dealer.resetHand();
-                        player.resetHand();
-
-                        break;
-                    }
-                    // Check for blackjack
-                    if (player.hasBlackjack()) {
-                        System.out.println("BlackJack! Player has won!");
-                        // Player won, reset bet and update balance
-                        player.payPlayer(2.5);
-                        gameOver = true;
-                        // Clear both hands
-                        dealer.resetHand();
-                        player.resetHand();
-
-                        break;
-                    }
-
-                    System.out.print("Hit or Stand? [y/n]: ");
-                    response = scan.next();
-                }
-
-                if (!gameOver) {
-                    // Player turn over, dealer reveals card (dealer does not have blackjack here)
-                    System.out.println("\nDealer reveals: " + dealer.getHand());
-                    System.out.println("Dealer has: " + dealer.getHandValue());
-
-                    // Dealer hit until at least 17
-                    while (dealer.getHandValue() < 17) {
-                        dealer.addCardToHand(deck.deal());
-                        System.out.println("Dealer hits: " + dealer.getHand());
-                        System.out.println("Dealer has: " + dealer.getHandValue());
-                    }
-
-                    checkWin(player, dealer);
-                    gameOver = true;
-                }
-            }
-
-            // Clear both hands
-            dealer.resetHand();
-            player.resetHand();
-
-            // Show current balance
-            System.out.println("\n\nPlayer balance: $" + player.getCurrentBalance());
-
-            System.out.print("Play again? [y/n]: ");
-            newGame = scan.next();
-        }
-
-
+        return true;
     }
 
-    private static void dealInitialCards(Deck deck, Dealer dealer, Player player, boolean gameState) {
-        // Deal cards
+    public boolean startNewRound() {
+        // TODO: Make sure there are enough cards in the deck (already done in the deck class)
+
+        // Reset hands
+        player.resetHand();
+        dealer.resetHand();
+
+        // Shift state to betting
+        state = GameState.BETTING;
+
+        return true;
+    }
+
+    public boolean placeBet(int amount) {
+        if (state != GameState.BETTING) {
+            return false;
+        }
+
+        // Place bet
+        player.placeBet(amount); // Throws an error if amount is greater than balance
+
+        // Shift state to dealing
+        state = GameState.DEALING;
+
+        return true;
+    }
+
+    public GameResult dealInitialCards() {
+        if (state != GameState.DEALING) {
+            return null;
+        }
+
         player.addCardToHand(deck.deal());
         dealer.addCardToHand(deck.deal());
         player.addCardToHand(deck.deal());
         dealer.addCardToHand(deck.deal());
 
-        // Immediately check for blackjack
-        if (player.hasBlackjack() && dealer.hasBlackjack()) {
-            System.out.println("Both have BlackJack! - Push");
-            player.payPlayer(1);
-            gameState = true;
-            clearHands(player, dealer);
-        } else if (player.hasBlackjack()) {
-            System.out.println("Player has BlackJack! Player wins!");
-            player.payPlayer(2.5);
-            gameState = true;
-            clearHands(player, dealer);
-        } else if (dealer.hasBlackjack()) {
-            System.out.println("Dealer has BlackJack. Dealer wins.");
-            player.payPlayer(0);
-            gameState = true;
-            clearHands(player, dealer);
+        // Check for initial (natural) blackjack
+        boolean playerHasBlackJack = player.hasBlackjack();
+        boolean dealerHasBlackJack = dealer.hasBlackjack();
+
+        if (playerHasBlackJack & dealerHasBlackJack) {
+            endRound(GameResult.BOTH_BLACKJACK);
+            return GameResult.BOTH_BLACKJACK;
+        } else if (playerHasBlackJack) {
+            endRound(GameResult.PLAYER_BLACKJACK);
+            return GameResult.PLAYER_BLACKJACK;
+        } else if (dealerHasBlackJack) {
+            endRound(GameResult.DEALER_BLACKJACK);
+            return GameResult.DEALER_BLACKJACK;
         }
 
-
-        System.out.println("Player has: " + player.getHandValue());
-        System.out.println("Player hand: " + player.getHand());
-        System.out.println("Dealer showing: " + dealer.getFirstCard() + "\n");
+        // Shift state to player turn
+        state = GameState.PLAYER_TURN;
+        return GameResult.IN_PROGRESS;
     }
 
-    private static void checkWin(Player player, Dealer dealer) {
+    public GameResult playerHit() {
+        if (state != GameState.PLAYER_TURN) {
+            return null;
+        }
+
+        // Deal card to player
+        player.addCardToHand(deck.deal());
+
+        if (player.getHandValue() > 21) {
+            endRound(GameResult.PLAYER_BUST);
+            return GameResult.PLAYER_BUST;
+        }
+
+        if (player.getHandValue() == 21) {
+            endRound(GameResult.PLAYER_BLACKJACK);
+            return GameResult.PLAYER_BLACKJACK;
+        }
+
+        return GameResult.IN_PROGRESS;
+    }
+
+    public GameResult playerStand() {
+        if (state != GameState.PLAYER_TURN) {
+            return null;
+        }
+
+        state = GameState.DEALER_TURN;
+        // Automatically switches to dealer's turn
+        return dealerPlay();
+    }
+
+    public GameResult dealerPlay() {
+        if (state != GameState.DEALER_TURN) {
+            return null;
+        }
+
+        while (dealer.getHandValue() <= 16) {
+            dealer.addCardToHand(deck.deal());
+        }
+
+        // No more dealing necessary (both turns are over)
+        GameResult result = determineWinner();
+        endRound(result);
+        return result;
+    }
+
+    private GameResult determineWinner() {
         int playerValue = player.getHandValue();
         int dealerValue = dealer.getHandValue();
 
-        if (dealer.hand.isBust()) {
-            System.out.println("\n\nDealer bust! Player wins!");
-            // Player wins, reset bet and update balance
-            player.payPlayer(2.0);
-        } else if (playerValue > dealerValue) {
-            System.out.println("\n\nPlayer wins with " + playerValue + " vs " + dealerValue);
-            // Player wins, reset bet and update balance
-            player.payPlayer(2.0);
-        } else if (dealerValue > playerValue) {
-            System.out.println("\n\nDealer wins with " + dealerValue + " vs " + playerValue);
-            // Dealer wins, reset bet and update balance
-            player.payPlayer(0);
-        } else {
-            System.out.println("\n\nTie (Push) Both have " + playerValue);
-            // Tie, reset bet and update balance
-            player.payPlayer(1.0);
+        // Check for bust
+        if (dealerValue > 21) {
+            return GameResult.DEALER_BUST;
         }
 
-        clearHands(player, dealer);
+        if (playerValue > dealerValue) {
+            return GameResult.PLAYER_WIN;
+        } else if (dealerValue > playerValue) {
+            return GameResult.DEALER_WIN;
+        } else {
+            return GameResult.PUSH;
+        }
     }
 
-    private static void clearHands(Player player, Dealer dealer) {
-        player.resetHand();
-        dealer.resetHand();
+    private void endRound(GameResult result) {
+        double payout = calculatePayout(result);
+        player.payPlayer(payout);
+        state = GameState.GAME_OVER;
+    }
+
+    private double calculatePayout(GameResult result) {
+        switch (result) {
+            case PLAYER_BLACKJACK:
+                return 2.5; // 3:2 Payout
+            case PLAYER_WIN:
+            case DEALER_BUST:
+                return 2.0; // 2:1 Payout
+            case PUSH:
+            case BOTH_BLACKJACK:
+                    return 1.0; // Tie
+            case DEALER_WIN:
+            case DEALER_BLACKJACK:
+            case PLAYER_BUST:
+            default:
+                return 0.0; // Player loses
+        }
+    }
+
+    public GameState getGameState() {
+        return state;
     }
 }
