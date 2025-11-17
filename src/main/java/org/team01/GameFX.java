@@ -28,19 +28,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.io.InputStream;
-
 
 public class GameFX extends Application {
     @Override
     public void start(Stage primaryStage) {
+        StackPane root = new StackPane();
         // Create the background of the game
         Rectangle background = new Rectangle();
-        background.setWidth(586);
-        background.setHeight(282);
         background.setFill(Color.web("#349D38"));
+        background.widthProperty().bind(root.widthProperty());
+        background.heightProperty().bind(root.heightProperty());
 
-        StackPane root = new StackPane();
         root.getChildren().add(background);
 
         Scene scene = new Scene(root, 586, 282);
@@ -70,9 +68,26 @@ public class GameFX extends Application {
 
         System.out.println(viewBalance.getImage().getWidth());
         System.out.println(viewBalance.getImage().getHeight());
+
+        ImageView card1 = createCardView(new Card(Suit.SPADES, 10, FaceValue.KING));
+        ImageView card2 = createCardView(new Card(Suit.DIAMONDS, 11, FaceValue.ACE));
+
+        root.getChildren().addAll(card1, card2);
     }
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private ImageView createCardView(Card card) {
+        String fullImagePath = "file:" + System.getProperty("user.dir") + "/src/main/java/org/team01/assets/Cards (large)/" + card.getImagePath() + ".png";
+        Image cardImage = new Image(fullImagePath);
+
+        ImageView cardView = new ImageView(cardImage);
+        cardView.setFitHeight(100);
+        cardView.setFitWidth(60);
+        cardView.setPreserveRatio(true);
+
+        return cardView;
     }
 }
