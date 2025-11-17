@@ -70,12 +70,6 @@ public class GameFX extends Application {
 
         System.out.println(viewBalance.getImage().getWidth());
         System.out.println(viewBalance.getImage().getHeight());
-
-
-
-
-
-
     }
 
     public static void main(String[] args) {
