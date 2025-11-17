@@ -25,6 +25,7 @@ public class Card {
     private Suit suit;
     private int value;
     private FaceValue rank;
+    private String imagePath;
 
     /**
      * Constructs a new Card with the specified suit, value, and rank
@@ -36,6 +37,7 @@ public class Card {
         this.suit = suit; // HEARTS, DIAMONDS, CLUBS, SPADES
         this.value = value; // 1, 2, 3, ...
         this.rank = rank; // ACE, TWO, THREE, ...
+        setImagePath();
     }
 
     /**
@@ -63,6 +65,35 @@ public class Card {
      */
     public FaceValue getRank() {
         return this.rank;
+    }
+
+    private void setImagePath() {
+        String suit = this.suit.toString().substring(0, 1);
+        String path;
+        switch (this.rank) {
+            case ACE:
+                path = "A" + suit;
+                break;
+            case KING:
+                path = "K" + suit;
+                break;
+            case QUEEN:
+                path = "Q" + suit;
+                break;
+            case JACK:
+                path = "J" + suit;
+                break;
+            default:
+                String value = Integer.toString(this.value);
+                path = value + suit;
+                break;
+        }
+
+        this.imagePath = path;
+    }
+
+    public String getImagePath() {
+        return this.imagePath;
     }
 
     /**
