@@ -16,6 +16,7 @@
  */
 
 package org.team01;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
@@ -197,5 +198,9 @@ public class Game {
 
     public GameState getGameState() {
         return state;
+    }
+
+    public Hand getPlayerCards() {
+        return this.player.getHand();
     }
 }
