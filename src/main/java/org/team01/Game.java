@@ -64,13 +64,13 @@ public class Game {
         return true;
     }
 
-    public boolean placeBet(int amount) {
+    public boolean placeBet(Bet bet) {
         if (state != GameState.BETTING) {
             return false;
         }
 
         // Place bet
-        player.placeBet(amount); // Throws an error if amount is greater than balance
+        player.placeBet(bet); // Throws an error if amount is greater than balance
 
         // Shift state to dealing
         state = GameState.DEALING;
