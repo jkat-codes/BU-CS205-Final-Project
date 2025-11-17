@@ -35,7 +35,6 @@ public class Player extends Participant {
         this.currentBet = currentBet;
     }
 
-
     /**
      * Identify the amount of bet and the balance after placing the bet
      *
