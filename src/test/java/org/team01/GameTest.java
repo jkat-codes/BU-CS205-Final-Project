@@ -24,10 +24,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
     private Game game;
+    private Bet bet;
 
     @BeforeEach
     public void setUp() {
         game = new Game();
+        bet = new Bet();
+        bet.addBet(Chips.BLUE,1);
     }
 
     @Test
@@ -52,18 +55,18 @@ public class GameTest {
     public void testBetting() {
         game.initializeNewGame();
         game.startNewRound();
-        game.placeBet(10);
+        game.placeBet(bet);
         assertEquals(GameState.DEALING, game.getGameState());
 
         Game newGame = new Game();
-        assertFalse(newGame.placeBet(10));
+        assertFalse(newGame.placeBet(bet));
     }
 
     @Test
     public void testInitialDeal() {
         game.initializeNewGame();
         game.startNewRound();
-        game.placeBet(10);
+        game.placeBet(bet);
         game.dealInitialCards();
         assertEquals(GameState.PLAYER_TURN, game.getGameState());
 
@@ -75,7 +78,7 @@ public class GameTest {
     public void testPlayerActions() {
         game.initializeNewGame();
         game.startNewRound();
-        game.placeBet(10);
+        game.placeBet(bet);
         game.dealInitialCards();
 
         GameResult result = game.playerHit();
@@ -92,7 +95,7 @@ public class GameTest {
     public void testDealerActions() {
         game.initializeNewGame();
         game.startNewRound();
-        game.placeBet(10);
+        game.placeBet(bet);
         game.dealInitialCards();
 
         // Force instant stand (automatically calls dealerPlay())
