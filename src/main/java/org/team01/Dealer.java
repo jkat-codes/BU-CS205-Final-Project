@@ -70,6 +70,10 @@ public class Dealer extends Participant {
     public boolean shouldRevealCard() {
         return hand.getHandValue() == 21;
     }
+
+    public int getFirstCard() {
+        return hand.getCurrentHand().get(0).getValue();
+    }
 }
 
 
