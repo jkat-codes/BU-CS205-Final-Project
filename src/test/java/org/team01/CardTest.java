@@ -17,12 +17,8 @@ package org.team01;/* *****************************************
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.team01.Card;
-import org.team01.FaceValue;
-import org.team01.Suit;
 
 public class CardTest {
     private Card card1;
@@ -66,5 +62,48 @@ public class CardTest {
         assertTrue(kingValue);
         assertTrue(queenValue);
         assertTrue(jackValue);
+    }
+
+    @Test
+    void testImagePaths() {
+        Card king = new Card(Suit.SPADES, 10, FaceValue.KING);
+        Card queen = new Card(Suit.SPADES, 10, FaceValue.QUEEN);
+        Card jack = new Card(Suit.SPADES, 10, FaceValue.JACK);
+        Card ace = new Card(Suit.SPADES, 11, FaceValue.ACE);
+
+        assertEquals("KS", king.getImagePath());
+        assertEquals("QS", queen.getImagePath());
+        assertEquals("JS", jack.getImagePath());
+        assertEquals("AS", ace.getImagePath());
+
+        Card hking = new Card(Suit.HEARTS, 10, FaceValue.KING);
+        Card hqueen = new Card(Suit.HEARTS, 10, FaceValue.QUEEN);
+        Card hjack = new Card(Suit.HEARTS, 10, FaceValue.JACK);
+        Card hace = new Card(Suit.HEARTS, 11, FaceValue.ACE);
+
+        assertEquals("KH", hking.getImagePath());
+        assertEquals("QH", hqueen.getImagePath());
+        assertEquals("JH", hjack.getImagePath());
+        assertEquals("AH", hace.getImagePath());
+
+        Card dking = new Card(Suit.DIAMONDS, 10, FaceValue.KING);
+        Card dqueen = new Card(Suit.DIAMONDS, 10, FaceValue.QUEEN);
+        Card djack = new Card(Suit.DIAMONDS, 10, FaceValue.JACK);
+        Card dace = new Card(Suit.DIAMONDS, 11, FaceValue.ACE);
+
+        assertEquals("KD", dking.getImagePath());
+        assertEquals("QD", dqueen.getImagePath());
+        assertEquals("JD", djack.getImagePath());
+        assertEquals("AD", dace.getImagePath());
+
+        Card cking = new Card(Suit.CLUBS, 10, FaceValue.KING);
+        Card cqueen = new Card(Suit.CLUBS, 10, FaceValue.QUEEN);
+        Card cjack = new Card(Suit.CLUBS, 10, FaceValue.JACK);
+        Card cace = new Card(Suit.CLUBS, 11, FaceValue.ACE);
+
+        assertEquals("KC", cking.getImagePath());
+        assertEquals("QC", cqueen.getImagePath());
+        assertEquals("JC", cjack.getImagePath());
+        assertEquals("AC", cace.getImagePath());
     }
 }

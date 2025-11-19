@@ -26,13 +26,22 @@ public class Hand {
 
     public Hand() {
         cards = new ArrayList<>();
-
     }
 
+    /**
+     * Add a card to hand
+     *
+     * @param card to add in hand
+     */
     public void addCardToHand(Card card) {
         cards.add(card);
     }
 
+    /**
+     * Determine if hand is blackjack
+     *
+     * @return true if hand equals 21; otherwise false
+     */
     public boolean isBlackJack() {
         // Check base case
         if (cards.isEmpty()) {
@@ -46,6 +55,11 @@ public class Hand {
         return handValue == 21;
     }
 
+    /**
+     * Determine is hand is bust
+     *
+     * @return true if hand is over 21; otherwise false
+     */
     public boolean isBust() {
         if (cards.isEmpty()) {
             return false;
@@ -53,6 +67,11 @@ public class Hand {
         return getHandValue() > 21;
     }
 
+    /**
+     * Clear hand for a new ground
+     *
+     * @return true if hand is clearable and cleared; otherwise false
+     */
     public boolean clearHand() {
         if (cards.isEmpty()) {
             return false;
@@ -66,6 +85,12 @@ public class Hand {
     }
 
     // Getter
+
+    /**
+     * Return a copy of the current hand
+     *
+     * @return List of Cards copy of current hand; empty List if empty
+     */
     public List<Card> getCurrentHand() {
         List<Card> tempHand = new ArrayList<>();
         if (!cards.isEmpty()) {
@@ -76,6 +101,11 @@ public class Hand {
         return tempHand;
     }
 
+    /**
+     * Get the value of the current hand
+     *
+     * @return int value of the current hand
+     */
     public int getHandValue() {
         // Check base case
         if (cards.isEmpty()) {
@@ -90,6 +120,15 @@ public class Hand {
         return handValue;
     }
 
+    // String representation of entire hand
+    // Represents the Card as a string containing the rank and suit "QUEEN of Hearts"
+
+    /**
+     * String representation of entire hand
+     * Represents the Card as a string containing the rank and suit "QUEEN of Hearts"
+     *
+     * @return String representation of hand
+     */
     public String toString() {
         if (cards.isEmpty()) {
             return "[]";
