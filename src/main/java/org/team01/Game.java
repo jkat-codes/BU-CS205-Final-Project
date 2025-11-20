@@ -93,7 +93,7 @@ public class Game {
         boolean playerHasBlackJack = player.hasBlackjack();
         boolean dealerHasBlackJack = dealer.hasBlackjack();
 
-        if (playerHasBlackJack & dealerHasBlackJack) {
+        if (playerHasBlackJack && dealerHasBlackJack) {
             endRound(GameResult.BOTH_BLACKJACK);
             return GameResult.BOTH_BLACKJACK;
         } else if (playerHasBlackJack) {
@@ -177,12 +177,10 @@ public class Game {
     private void endRound(GameResult result) {
         double payout = calculatePayout(result);
         player.payPlayer(payout);
-        System.out.println("End round: " + player.getCurrentBalance());
         state = GameState.GAME_OVER;
     }
 
     private double calculatePayout(GameResult result) {
-        System.out.println("Payout result: " + result);
         switch (result) {
             case PLAYER_BLACKJACK:
                 return 2.5; // 3:2 Payout

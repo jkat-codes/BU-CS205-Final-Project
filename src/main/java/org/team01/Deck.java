@@ -87,7 +87,11 @@ public class Deck {
                 if (k > 10) {
                     cards.add(new Card(suit, 10, FaceValues.get(k)));
                 } else {
-                    cards.add(new Card(suit, k, FaceValues.get(k)));
+                    if (k == 1) {
+                        cards.add(new Card(suit, 11, FaceValues.get(k)));
+                    } else {
+                        cards.add(new Card(suit, k, FaceValues.get(k)));
+                    }
                 }
             }
         }
