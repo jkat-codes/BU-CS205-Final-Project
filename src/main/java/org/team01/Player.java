@@ -17,9 +17,8 @@
 
 package org.team01;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Player extends Participant {
     private String name;
@@ -138,13 +137,34 @@ public class Player extends Participant {
         double betAmount = currentBet.calculateTotal();
 
         // Payout amount
-        double payout = betAmount * multiplier;
+        double payout = Math.round(betAmount * multiplier);
 
-        // Pay the player
+        // Pay the player (in the form of 'balance')
         this.balance += payout;
+
+        System.out.println("Chip inventory before: " + chipInventory);
+        // Find the optimal chips to return to the player
+        List<Integer> denomList = new ArrayList<>(Arrays.asList(100, 25, 10, 5, 1));
+        List<Chips> chipList = new ArrayList<>(Arrays.asList(Chips.BLACK, Chips.GREEN, Chips.BLUE, Chips.RED, Chips.WHITE));
+        for (int i = 0; i < denomList.size(); i++) {
+            int denomination = denomList.get(i);
+            if (payout / denomination >= 1) {
+                // Get the existing amount of chips
+                int existingChips = chipInventory.get(chipList.get(i));
+                // Add the existing amount PLUS the payout to the inventory
+                chipInventory.put(chipList.get(i), (int) payout / denomination + (existingChips));
+                // Update 'payout'
+                payout -= denomination * ((int) payout / denomination);
+            }
+        }
+
+        System.out.println("Chip inventory after: " + chipInventory);
+
+
 
         // Reset the current bet
         resetBet();
+
 
         return true;
     }
