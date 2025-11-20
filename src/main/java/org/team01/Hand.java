@@ -112,14 +112,21 @@ public class Hand {
             return -1;
         }
 
+        System.out.println("Get hand value called");
+
         // Add all card values
         int handValue = 0;
         for (Card card : cards) {
             handValue += card.getValue();
         }
-        if (containsAce() && handValue > 21) {
-            handValue -= 10;
+
+        for (int i = 0; i < numAcesInHand(); i++) {
+            if (containsAce() && handValue > 21) {
+                handValue -= 10;
+            }
         }
+
+        System.out.println("Hand value: " + handValue);
         return handValue;
     }
 
@@ -133,13 +140,18 @@ public class Hand {
      * @return String representation of hand
      */
 
-    public boolean containsAce() {
+    private boolean containsAce() {
         // first I need to get the hand
         boolean containsAce = cards.stream()
                 .anyMatch(card -> card.getRank() == FaceValue.ACE);
         return containsAce;
     }
 
+    private int numAcesInHand() {
+        return (int) cards.stream()
+                .filter(card -> card.getRank() == FaceValue.ACE)
+                .count();
+    }
 
     public String toString() {
         if (cards.isEmpty()) {

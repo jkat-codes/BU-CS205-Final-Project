@@ -30,9 +30,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import javax.swing.plaf.ColorUIResource;
-import java.util.concurrent.RecursiveAction;
-
 
 public class GameFX extends Application {
     private HBox dealerArea;
