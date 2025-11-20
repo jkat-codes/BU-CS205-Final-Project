@@ -20,12 +20,16 @@ package org.team01;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represent a money that player wager on the hand to compete against the dealer
+ * Bet is placed using chips
+ */
 public class Bet {
     private Map<Chips, Integer> chips;
 
     /**
-     *
      * Constructs a new Bet with initial value zero
+     *
      */
     public Bet() {
         this.chips = new HashMap<>();
@@ -57,10 +61,17 @@ public class Bet {
         return sum;
     }
 
+    /**
+     * Resets the chips on bet
+     */
     public void resetBet() {
         chips.clear();
     }
 
+    /**
+     * Getter method for identifying chip on bet
+     * @return chips on bet
+     */
     public Map<Chips, Integer> getChips() {
         return chips;
     }

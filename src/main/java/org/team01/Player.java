@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represent a player, who can place bet to gain or lose their given balance from game
+ */
 public class Player extends Participant {
     private String name;
     private double balance = 1000;

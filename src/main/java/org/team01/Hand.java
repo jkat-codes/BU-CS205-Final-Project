@@ -20,6 +20,9 @@ package org.team01;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represent sum of cards the dealer and player has in the game
+ */
 public class Hand {
 
     private List<Card> cards;

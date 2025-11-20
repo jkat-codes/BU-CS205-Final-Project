@@ -1,5 +1,17 @@
 package org.team01;
 
+/**
+ * An enumerated type that defines color and value of Chips that player has
+ * and used as wagers to place bets
+ * --
+ * Chip types:
+ * - WHITE: white-colored chip which its value is $1
+ * - RED: red-colored chip which its value is $5
+ * - BLUE: blue-colored chip which its value is $10
+ * - GREEN: green-colored chip which its value is $25
+ * - BLACK: black-colored chip which its value is $100
+ *
+ */
 public enum Chips {
     WHITE(1),
     RED(5),
@@ -14,6 +26,10 @@ public enum Chips {
         this.chipValue = chipValue;
     }
 
+    /**
+     * Get values from designated chips
+     * @return chip value
+     */
     public int getChipValue() {
         return this.chipValue;
     }
