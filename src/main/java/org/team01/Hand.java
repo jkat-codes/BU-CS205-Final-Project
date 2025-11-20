@@ -120,6 +120,9 @@ public class Hand {
         for (Card card : cards) {
             handValue += card.getValue();
         }
+        if (containsAce() && handValue > 21) {
+            handValue -= 10;
+        }
         return handValue;
     }
 
@@ -132,6 +135,15 @@ public class Hand {
      *
      * @return String representation of hand
      */
+
+    public boolean containsAce() {
+        // first I need to get the hand
+        boolean containsAce = cards.stream()
+                .anyMatch(card -> card.getRank() == FaceValue.ACE);
+        return containsAce;
+    }
+
+
     public String toString() {
         if (cards.isEmpty()) {
             return "[]";

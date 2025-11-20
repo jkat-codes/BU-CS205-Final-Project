@@ -20,7 +20,7 @@ package org.team01;
  * - KING: face card of King with value of 10
  */
 public enum FaceValue {
-    ACE(1, "ACE"),
+    ACE(11, "ACE"),
     TWO(2, "TWO"),
     THREE(3, "THREE"),
     FOUR(4, "FOUR"),

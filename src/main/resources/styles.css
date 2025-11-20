@@ -1,0 +1,39 @@
+.card-area {
+    -fx-background-color: #6fc391;
+    -fx-border-color: #265c3c;
+    -fx-border-radius: 5px;
+    -fx-min-height: 240px;
+    -fx-min-width: 340px;
+}
+
+.balance-view {
+    -fx-min-width: 100px;
+    -fx-max-width: 175px;
+    -fx-min-height: 50px;
+    -fx-border-color: black;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px ;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}
+
+.chips-container {
+    -fx-min-width: 100px;
+    -fx-min-height: 50px;
+    -fx-border-color: red;
+}
+
+.button-container {
+    -fx-border-color: pink;
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+}
+
+.button {
+    -fx-background-color: yellow;
+    -fx-border-color: black;
+    -fx-border-radius: 5px;
+    -fx-min-height: 50px;
+    -fx-min-width: 200px;
+    -fx-background-radius: 5px;
+}

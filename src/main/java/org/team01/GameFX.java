@@ -18,76 +18,159 @@
 package org.team01;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import javax.swing.plaf.ColorUIResource;
+import java.util.concurrent.RecursiveAction;
+
 
 public class GameFX extends Application {
+    private HBox dealerArea;
+    private HBox playerArea;
+    private Game model;
+    private GameController controller;
+
+
     @Override
     public void start(Stage primaryStage) {
+        // Start the controller
+
+        controller = new GameController(model, this);
+
         StackPane root = new StackPane();
+        Scene scene = new Scene(root, 1000, 1000);
+        String css = getClass().getResource("/styles.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        primaryStage.setTitle("Green Rectangle Background");
+        primaryStage.setScene(scene);
+        primaryStage.setMinWidth(450);
+        primaryStage.setMinHeight(750);
+
         // Create the background of the game
         Rectangle background = new Rectangle();
         background.setFill(Color.web("#349D38"));
         background.widthProperty().bind(root.widthProperty());
         background.heightProperty().bind(root.heightProperty());
 
-        root.getChildren().add(background);
+         // Create hbox to hold all vboxes
+        HBox mainContainer = new HBox();
+        // Fill the entire stack pane (root)
+        mainContainer.setMaxWidth(Double.MAX_VALUE);
+        mainContainer.setMaxHeight(Double.MAX_VALUE);
 
-        Scene scene = new Scene(root, 586, 282);
-        primaryStage.setTitle("Green Rectangle Background");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        // Create vboxes
+        VBox leftContainer = new VBox();
+        VBox centerContainer = new VBox();
+        VBox rightContainer = new VBox();
 
-        //going to create the H box that will hold the Vboxes for the different features
-        VBox vBox1 = new VBox();
-        VBox vBox2 = new VBox();
-        VBox vBox3 = new VBox();
-        HBox hbox  = new HBox(10, vBox1, vBox2, vBox3);
+        // Scale with hbox
+        leftContainer.setMaxHeight(Double.MAX_VALUE);
+        centerContainer.setMaxHeight(Double.MAX_VALUE);
+        rightContainer.setMaxHeight(Double.MAX_VALUE);
+        HBox.setHgrow(leftContainer, Priority.ALWAYS);
+        HBox.setHgrow(centerContainer, Priority.ALWAYS);
+        HBox.setHgrow(rightContainer, Priority.ALWAYS);
 
-        root.getChildren().add(hbox);
+        // Create and add the balance view Add the balance and chips to leftContainer
+        VBox balanceView = new VBox();
+        balanceView.getStyleClass().add("balance-view");
+        // TODO: replace 1000 with the actual balance of the player playing
+        Label balanceLabel = new Label("Current Balance: " + 1000);
+        balanceView.getChildren().add(balanceLabel);
 
-        //add the balance button
-        Image balanceButton = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/org/team01" +
-                "/assets/balance-button.png");
-        ImageView viewBalance = new ImageView(balanceButton);
-        vBox1.getChildren().add(viewBalance);
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        //add the chips
-        Image chips = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/org/team01" +
-                "/assets/bitcoinChips.png");
-        ImageView viewChips = new ImageView(chips);
-        vBox1.getChildren().add(viewChips);
+        HBox chipsContainer = new HBox();
+        chipsContainer.getStyleClass().add("chips-container");
+//        Image chips = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/org/team01" +
+//                "/assets/bitcoinChips.png");
+//        ImageView viewChips = new ImageView(chips);
 
-        System.out.println(viewBalance.getImage().getWidth());
-        System.out.println(viewBalance.getImage().getHeight());
+        leftContainer.getChildren().addAll(
+                balanceView,
+                spacer,
+                chipsContainer
+        );
+        leftContainer.setPadding(new Insets(10));
 
-        ImageView card1 = createCardView(new Card(Suit.SPADES, 10, FaceValue.KING));
+        // Create and add elements to the centerContainer
+        centerContainer.setPadding(new Insets(10));
+
+        dealerArea = new HBox();
+        dealerArea.getStyleClass().add("card-area");
+
+        Region centerSpacer = new Region();
+        VBox.setVgrow(centerSpacer, Priority.ALWAYS);
+
+        playerArea = new HBox();
+        playerArea.getStyleClass().add("card-area");
+
         ImageView card2 = createCardView(new Card(Suit.DIAMONDS, 11, FaceValue.ACE));
+        playerArea.getChildren().add(card2);
 
-        root.getChildren().addAll(card1, card2);
+        centerContainer.setAlignment(Pos.CENTER);
+        centerContainer.getChildren().addAll(
+            dealerArea,
+            centerSpacer,
+            playerArea
+        );
+
+
+        // Add the choice buttons to rightContainer
+        VBox buttonContainer = new VBox();
+        buttonContainer.getStyleClass().add("button-container");
+        // Always scale with height
+        VBox.setVgrow(buttonContainer, Priority.ALWAYS);
+
+        Button hitButton = new Button("Hit");
+        hitButton.getStyleClass().add("button");
+
+        Button standButton = new Button("Stand");
+        standButton.getStyleClass().add("button");
+
+        buttonContainer.getChildren().addAll(
+                hitButton,
+                standButton
+        );
+
+        rightContainer.getChildren().addAll(
+                buttonContainer
+        );
+
+        // Add the background and main container to root
+        mainContainer.getChildren().addAll(leftContainer, centerContainer, rightContainer);
+        root.getChildren().addAll(background, mainContainer);
+
+        controller.initialize(dealerArea, playerArea, balanceLabel, hitButton, standButton);
+
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    private ImageView createCardView(Card card) {
+    public ImageView createCardView(Card card) {
         String fullImagePath = "file:" + System.getProperty("user.dir") + "/src/main/java/org/team01/assets/Cards (large)/" + card.getImagePath() + ".png";
         Image cardImage = new Image(fullImagePath);
 
         ImageView cardView = new ImageView(cardImage);
-        cardView.setFitHeight(100);
-        cardView.setFitWidth(60);
+        cardView.setFitHeight(140);
+        cardView.setFitWidth(100);
         cardView.setPreserveRatio(true);
 
         return cardView;
     }
+
 }
