@@ -24,7 +24,7 @@ public class Player extends Participant {
     private String name;
     private double balance = 1000;
     private Bet currentBet;
-    private Map<Chips, Integer> chipInventory;
+
 
     /**
      * Public constructor for Player with the specified name and balance
@@ -33,14 +33,6 @@ public class Player extends Participant {
     public Player(String name) {
         super();
         this.name = name;
-
-        // initialize the number of chips the player has for total balance of 1000
-        chipInventory = new HashMap<>();
-        chipInventory.put(Chips.BLACK, 5); // 100 * 5 = 500
-        chipInventory.put(Chips.GREEN, 8); // 25 * 8 = 200
-        chipInventory.put(Chips.BLUE, 20); // 10 * 20 = 200
-        chipInventory.put(Chips.RED, 18); // 5 * 18 = 90
-        chipInventory.put(Chips.WHITE, 10); // 1 * 10 = 10
     }
 
     /**
@@ -60,17 +52,6 @@ public class Player extends Participant {
             throw new IllegalArgumentException("Not enough chips for the bet.");
         }
 
-        // Check if the player has enough chips
-        for (Chips chip : bet.getChips().keySet()) {
-            int betCount = bet.getChips().get(chip);
-            int inventoryCount = chipInventory.getOrDefault(chip,0);
-            if (!chipInventory.containsKey(chip) || chipInventory.get(chip) < betCount) {
-                throw new IllegalArgumentException("Not enough chips.");
-            }
-            // Deduct chips from player
-            chipInventory.put(chip, inventoryCount - betCount);
-        }
-
         this.currentBet = bet;
         this.balance -= amount;
     }
@@ -80,9 +61,7 @@ public class Player extends Participant {
      * @return player's balance
      */
     public double getCurrentBalance() {
-        return chipInventory.entrySet().stream()
-                .mapToInt(w -> w.getKey().getChipValue() * w.getValue())
-                .sum();
+        return balance;
     }
 
     /**
@@ -137,36 +116,13 @@ public class Player extends Participant {
         double betAmount = currentBet.calculateTotal();
 
         // Payout amount
-        double payout = Math.round(betAmount * multiplier);
+        double payout = betAmount * multiplier;
 
-        // Pay the player (in the form of 'balance')
+        // Pay the player
         this.balance += payout;
 
-        System.out.println("Chip inventory before: " + chipInventory);
-        // Find the optimal chips to return to the player
-        List<Integer> denomList = new ArrayList<>(Arrays.asList(100, 25, 10, 5, 1));
-        List<Chips> chipList = new ArrayList<>(Arrays.asList(Chips.BLACK, Chips.GREEN, Chips.BLUE, Chips.RED, Chips.WHITE));
-        for (int i = 0; i < denomList.size(); i++) {
-            int denomination = denomList.get(i);
-            if (payout / denomination >= 1) {
-                // Get the existing amount of chips
-                int existingChips = chipInventory.get(chipList.get(i));
-                // Add the existing amount PLUS the payout to the inventory
-                chipInventory.put(chipList.get(i), (int) payout / denomination + (existingChips));
-                // Update 'payout'
-                payout -= denomination * ((int) payout / denomination);
-            }
-        }
-
-        System.out.println("Chip inventory after: " + chipInventory);
-
-
-
         // Reset the current bet
-        resetBet();
-
-
-        return true;
+        return resetBet();
     }
 }
 
