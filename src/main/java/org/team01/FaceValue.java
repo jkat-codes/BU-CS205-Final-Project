@@ -1,5 +1,24 @@
 package org.team01;
 
+/**
+ * An enumerated type that defines the type of the cards (number of face)
+ * as well as its value and name
+ * --
+ * Card Types:
+ * - ACE: number card of Ace with value of 1
+ * - TWO: number card wih value of 2
+ * - THREE: number card with value of 3
+ * - FOUR: number card with value of 4
+ * - FIVE: number card with value of 5
+ * - SIX: number card with value of 6
+ * - SEVEN: number card with value of 7
+ * - EIGHT: number card with value of 8
+ * - NINE: number card with value of 9
+ * - TEN: number card with value of 10
+ * - JACK: face card of Jack wih value of 10
+ * - QUEEN: face card of Queen with value of 10
+ * - KING: face card of King with value of 10
+ */
 public enum FaceValue {
     ACE(1, "ACE"),
     TWO(2, "TWO"),
