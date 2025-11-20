@@ -107,6 +107,8 @@ public class Game {
         // Shift state to player turn
         state = GameState.PLAYER_TURN;
         return GameResult.IN_PROGRESS;
+
+        // Need to check for natural win here too (dealer has 17 and player has > 17)
     }
 
     public GameResult playerHit() {
@@ -175,10 +177,12 @@ public class Game {
     private void endRound(GameResult result) {
         double payout = calculatePayout(result);
         player.payPlayer(payout);
+        System.out.println("End round: " + player.getCurrentBalance());
         state = GameState.GAME_OVER;
     }
 
     private double calculatePayout(GameResult result) {
+        System.out.println("Payout result: " + result);
         switch (result) {
             case PLAYER_BLACKJACK:
                 return 2.5; // 3:2 Payout
@@ -202,5 +206,13 @@ public class Game {
 
     public Hand getPlayerCards() {
         return this.player.getHand();
+    }
+
+    public Hand getDealerCards() {
+        return this.dealer.getHand();
+    }
+
+    public Double getPlayerBalance() {
+        return this.player.getCurrentBalance();
     }
 }

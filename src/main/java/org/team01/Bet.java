@@ -64,11 +64,5 @@ public class Bet {
     public Map<Chips, Integer> getChips() {
         return chips;
     }
-
-    public void calculateBalance() {
-
-    }
-
-    // Consider where to add method for getting more chips (i.e. more money) if player wins
 }
 
