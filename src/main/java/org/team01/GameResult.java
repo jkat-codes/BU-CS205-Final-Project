@@ -10,10 +10,10 @@ package org.team01;
  * - DEALER_BLACKJACK: dealer gets natural blackjack
  * - PLAYER_BUST: player's hand total exceeds 21; player lose
  * - DEALER_BUST: dealer's hand total exceeds 21; dealer lose
- * - PLAYER_WIN:
- * - DEALER_WIN:
- * - PUSH:
- * - IN_PROGRESS:
+ * - PLAYER_WIN: player wins the game
+ * - DEALER_WIN: dealer wins the game
+ * - PUSH: tie between player and dealer
+ * - IN_PROGRESS: game in progress; players hasn't stood
  *
  */
 public enum GameResult {
