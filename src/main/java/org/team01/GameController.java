@@ -174,8 +174,40 @@ public class GameController {
 
     }
 
+    private String getResultMessage(GameResult result) {
+        String output = "";
+        switch (result) {
+            case BOTH_BLACKJACK:
+            case PUSH:
+                output = "Tie game!";
+                break;
+            case PLAYER_BLACKJACK:
+                output = "BlackJack! You win!";
+                break;
+            case DEALER_BLACKJACK:
+                output = "Dealer BlackJack, you lose.";
+                break;
+            case PLAYER_BUST:
+                output = "Busted! You lose.";
+                break;
+            case DEALER_BUST:
+                output = "Dealer busted! You win!";
+                break;
+            case PLAYER_WIN:
+                output = "You win!";
+                break;
+            case DEALER_WIN:
+                output = "Dealer wins, you lose.";
+                break;
+            default:
+                break;
+    }
+
+        return output;
+    }
+
     private void handleGameEnd(GameResult result) {
-        showAlert("Game over!", result.toString());
+        showAlert("Game over!", getResultMessage(result));
         // Update player balance
         handleUpdateBalance();
         // Clear the cards
