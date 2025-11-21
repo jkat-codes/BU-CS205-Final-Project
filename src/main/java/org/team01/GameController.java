@@ -152,9 +152,15 @@ public class GameController {
 
             // Update dealer cards
             if (model.getDealerCards() != null) {
-                // TODO: Only reveal the first card, show the back of the second
+                int index = 0;
                 for (Card card : model.getDealerCards().getCurrentHand()) {
-                    this.dealerArea.getChildren().add(this.view.createCardView(card));
+                    index += 1;
+                    if (model.getDealerCards().getCurrentHand().size() == 2 && index == 2 && model.getGameState() == GameState.PLAYER_TURN) {
+                        // Dealer second card is hidden
+                        this.dealerArea.getChildren().add(this.view.createBackCardView());
+                    }else {
+                        this.dealerArea.getChildren().add(this.view.createCardView(card));
+                    }
                 }
             }
         });
