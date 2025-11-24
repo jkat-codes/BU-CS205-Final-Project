@@ -45,13 +45,14 @@ public class GameController {
     private Button startGameButton;
     private Bet currentBet;
     private Label currentBetLabel;
+    private Button clearBetButton;
 
     public GameController(Game model, GameFX view) {
         this.model = new Game();
         this.view = view;
     }
 
-    public void initialize(HBox dealerArea, HBox playerArea, Label balanceLabel, Button hitButton, Button standButton, Button white, Button red, Button blue, Button green, Button black, Button startGameButton, Label currentBetLabel) {
+    public void initialize(HBox dealerArea, HBox playerArea, Label balanceLabel, Button hitButton, Button standButton, Button white, Button red, Button blue, Button green, Button black, Button startGameButton, Label currentBetLabel, Button clearBetButton) {
         this.dealerArea = dealerArea;
         this.playerArea = playerArea;
         this.balanceLabel = balanceLabel;
@@ -66,6 +67,7 @@ public class GameController {
         this.currentBet = new Bet();
         this.startGameButton = startGameButton;
         this.currentBetLabel = currentBetLabel;
+        this.clearBetButton = clearBetButton;
 
         // Setup event handlers
         setupEventHandlers();
@@ -92,6 +94,7 @@ public class GameController {
 
             // Re-enable the start game button
             startGameButton.setDisable(false);
+            clearBetButton.setDisable(false);
 
             betPlaced = false;
             currentBet = new Bet();
@@ -145,9 +148,12 @@ public class GameController {
             black.setOnAction(e -> handlePlaceBet(100));
         }
 
-
         if (this.startGameButton != null) {
             startGameButton.setOnAction(e -> handleStartGame());
+        }
+
+        if (this.clearBetButton != null) {
+            this.clearBetButton.setOnAction(e -> handleClearBet());
         }
     }
 
@@ -190,6 +196,7 @@ public class GameController {
             blue.setDisable(true);
             green.setDisable(true);
             startGameButton.setDisable(true);
+            clearBetButton.setDisable(true);
 
             // Re-enable the hit/stand buttons
             hitButton.setDisable(false);
@@ -198,6 +205,17 @@ public class GameController {
             currentBet = new Bet();
 
             handleDeal();
+        }
+    }
+
+    private void handleClearBet() {
+        if (this.currentBet.calculateTotal() > 0) {
+            currentBet = new Bet();
+            betPlaced = false;
+            handleUpdateBalance();
+            currentBetLabel.setText("Current Bet: $");
+
+            System.out.println(this.model.getPlayerBalance());
         }
     }
 

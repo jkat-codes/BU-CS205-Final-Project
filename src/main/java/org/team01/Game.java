@@ -178,6 +178,7 @@ public class Game {
         double payout = calculatePayout(result);
         player.payPlayer(payout);
         state = GameState.GAME_OVER;
+
     }
 
     private double calculatePayout(GameResult result) {

@@ -48,7 +48,7 @@ public class GameFX extends Application {
         Scene scene = new Scene(root, 1000, 550);
         String css = getClass().getResource("/styles.css").toExternalForm();
         scene.getStylesheets().add(css);
-        primaryStage.setTitle("Green Rectangle Background");
+        primaryStage.setTitle("BlackJack");
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(650);
@@ -154,6 +154,7 @@ public class GameFX extends Application {
         blueChip.setFitHeight(35);
         blueChip.setPreserveRatio(true);
 
+        // Set button graphic to each chip image
         Button white = new Button();
         white.getStyleClass().add("chips-image");
         white.setGraphic(whiteChip);
@@ -170,6 +171,10 @@ public class GameFX extends Application {
         black.getStyleClass().add("chips-image");
         black.setGraphic(blackChip);
 
+        // Create spacer to horizontally align everything
+        Region chipsSpacer = new Region();
+        HBox.setHgrow(chipsSpacer, Priority.ALWAYS);
+
         // Create the current bet label
         Label currentBetLabel = new Label("Current Bet: $");
         currentBetLabel.setTextFill(Color.web("white"));
@@ -180,14 +185,27 @@ public class GameFX extends Application {
                 blue,
                 green,
                 black,
+                chipsSpacer,
                 currentBetLabel
         );
 
+        // Create container for place bet/clear bet buttons
+        HBox betButtonsContainer = new HBox();
+        betButtonsContainer.getStyleClass().add("betbtn-container");
+
+        Button clearBetButton = new Button("Clear Bet");
+        Button newGameButton = new Button("Place Bet");
+        clearBetButton.getStyleClass().add("bet-btn");
+        newGameButton.getStyleClass().add("bet-btn");
+        betButtonsContainer.getChildren().addAll(clearBetButton, newGameButton);
+
         leftContainer.getChildren().addAll(
                 spacer,
+                betButtonsContainer,
                 chipsContainer
         );
         leftContainer.setPadding(new Insets(10));
+        leftContainer.setSpacing(5);
 
         // Create and add elements to the centerContainer
         centerContainer.setPadding(new Insets(10));
@@ -201,7 +219,6 @@ public class GameFX extends Application {
         playerArea = new HBox();
         playerArea.getStyleClass().add("card-area");
 
-        Button newGameButton = new Button("New Game");
 
         HBox buttonArea = new HBox();
         buttonArea.getStyleClass().add("button-container");
@@ -220,7 +237,6 @@ public class GameFX extends Application {
         centerContainer.setAlignment(Pos.CENTER);
         centerContainer.getChildren().addAll(
             dealerArea,
-            newGameButton,
             centerSpacer,
             playerArea,
             buttonArea
@@ -233,7 +249,7 @@ public class GameFX extends Application {
         root.getChildren().addAll(background, mainContainer);
 
 
-        controller.initialize(dealerArea, playerArea, balanceLabel, hitButton, standButton, white, red, blue, green, black, newGameButton, currentBetLabel);
+        controller.initialize(dealerArea, playerArea, balanceLabel, hitButton, standButton, white, red, blue, green, black, newGameButton, currentBetLabel, clearBetButton);
 
         primaryStage.show();
     }
