@@ -281,6 +281,8 @@ public class GameFX extends Application {
         cardView.setFitWidth(100);
         cardView.setPreserveRatio(true);
 
+        cardView.setUserData("HIDDEN_DEALER_CARD");
+
         return cardView;
     }
 }

@@ -17,12 +17,20 @@
 
 package org.team01;
 
+import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
+
+import java.util.List;
 
 public class GameController {
     private Game model;
@@ -46,6 +54,10 @@ public class GameController {
     private Bet currentBet;
     private Label currentBetLabel;
     private Button clearBetButton;
+    private boolean dealerCardRevealed;
+    private int lastDealerCardCount = 2;
+    private int lastPlayerCardCount = 2;
+    private boolean initialDealComplete;
 
     public GameController(Game model, GameFX view) {
         this.model = new Game();
@@ -68,6 +80,8 @@ public class GameController {
         this.startGameButton = startGameButton;
         this.currentBetLabel = currentBetLabel;
         this.clearBetButton = clearBetButton;
+        this.dealerCardRevealed = false;
+        this.initialDealComplete = false;
 
         // Setup event handlers
         setupEventHandlers();
@@ -160,26 +174,56 @@ public class GameController {
 
     private void handleHit() {
         // Call hit through the model
+        int cardsBeforeStand = model.getPlayerCards().getCurrentHand().size();
         GameResult result = this.model.playerHit();
+
+        int cardsAfterStand = model.getPlayerCards().getCurrentHand().size();
+        int newCards  = cardsAfterStand - cardsBeforeStand;
 
         updateCardDisplay();
 
         if (result != GameResult.IN_PROGRESS) {
-            handleGameEnd(result);
+            long extraAnimationTime = 500 + (newCards * 200) + 200;
+
+            PauseTransition waitForCards = new PauseTransition(Duration.millis(extraAnimationTime));
+            waitForCards.setOnFinished(event -> {
+                Platform.runLater(() -> handleGameEnd(result));
+            });
+            waitForCards.play();
         }
     }
 
     private void handleStand() {
-        // Call stand through the model
-        GameResult result = this.model.playerStand();
+        revealDealerCard();
 
-        updateCardDisplay();
+        PauseTransition waitForFlip = new PauseTransition(Duration.millis(800));
+        waitForFlip.setOnFinished(e -> {
+            this.dealerCardRevealed = true;
 
-        // Disable the hit and stand buttons
+            int cardsBeforeStand = model.getDealerCards().getCurrentHand().size();
 
-        if (result != GameResult.IN_PROGRESS) {
-            handleGameEnd(result);
-        }
+            // Call stand through the model
+            GameResult result = this.model.playerStand();
+
+            int cardsAfterStand = model.getDealerCards().getCurrentHand().size();
+            int newCards  = cardsAfterStand - cardsBeforeStand;
+
+            updateCardDisplay();
+
+            // Disable the hit and stand buttons
+            if (result != GameResult.IN_PROGRESS) {
+                long extraAnimationTime = 500 + (newCards * 200) + 200;
+
+                PauseTransition waitForCards = new PauseTransition(Duration.millis(extraAnimationTime));
+                waitForCards.setOnFinished(event -> {
+                    Platform.runLater(() -> handleGameEnd(result));
+                });
+                waitForCards.play();
+            }
+        });
+
+        waitForFlip.play();
+
     }
 
     private void handleStartGame() {
@@ -259,30 +303,136 @@ public class GameController {
         });
     }
 
+    private void animateCardDeal(ImageView cardView, HBox area, int cardIndex) {
+        cardView.setTranslateX(200);
+        cardView.setTranslateY(0);
+        cardView.setOpacity(0);
+
+        area.getChildren().add(cardView);
+
+        TranslateTransition slideIn = new TranslateTransition(Duration.millis(500), cardView);
+        slideIn.setToX(0);
+        slideIn.setToY(0);
+
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(500), cardView);
+        fadeIn.setToValue(1);
+
+
+        ParallelTransition dealAnimation = new ParallelTransition(slideIn, fadeIn);
+        dealAnimation.setDelay(Duration.millis(cardIndex * 200));
+        dealAnimation.play();
+    }
+
+    private void flipCard(ImageView hiddenCard, Card actualCard, HBox area) {
+        ImageView newCardView = this.view.createCardView(actualCard);
+        newCardView.setScaleX(0);
+
+        RotateTransition rotateOut = new RotateTransition(Duration.millis(500), hiddenCard);
+        rotateOut.setAxis(Rotate.Y_AXIS);
+        rotateOut.setByAngle(90);
+
+        ScaleTransition scaleOut = new ScaleTransition(Duration.millis(500), hiddenCard);
+        scaleOut.setToX(0);
+
+        ParallelTransition flipOut = new ParallelTransition(rotateOut, scaleOut);
+
+        flipOut.setOnFinished(e -> {
+            int index = area.getChildren().indexOf(hiddenCard);
+            area.getChildren().set(index, newCardView);
+
+            RotateTransition rotateIn = new RotateTransition(Duration.millis(500), newCardView);
+            rotateIn.setAxis(Rotate.Y_AXIS);
+            rotateIn.setFromAngle(-90);
+            rotateIn.setToAngle(0);
+
+            ScaleTransition scaleIn = new ScaleTransition(Duration.millis(500), newCardView);
+            scaleIn.setFromX(0);
+            scaleIn.setToX(1);
+
+            DropShadow glow = new DropShadow();
+            glow.setColor(Color.WHITESMOKE);
+            glow.setRadius(20);
+            newCardView.setEffect(glow);
+
+            ParallelTransition flipIn = new ParallelTransition(rotateIn, scaleIn);
+            flipIn.setOnFinished(event -> {
+                FadeTransition fadeGlow = new FadeTransition(Duration.millis(500), newCardView);
+                fadeGlow.setOnFinished(e2 -> newCardView.setEffect(null));
+                fadeGlow.play();
+            });
+
+            flipIn.play();
+        });
+        flipOut.play();
+    }
+
+    private void revealDealerCard() {
+        Platform.runLater(() -> {
+            for (Node node: dealerArea.getChildren()) {
+               if (node instanceof ImageView && "HIDDEN_DEALER_CARD".equals(node.getUserData()))  {
+                   ImageView hiddenCard = (ImageView) node;
+                   int cardIndex = dealerArea.getChildren().indexOf(hiddenCard);
+
+                   if (model.getDealerCards() != null && model.getDealerCards().getCurrentHand().size() > cardIndex) {
+                       Card actualCard = model.getDealerCards().getCurrentHand().get(cardIndex);
+                       flipCard(hiddenCard, actualCard, dealerArea);
+                   }
+                   break;
+               }
+            }
+        });
+    }
+
     private void updateCardDisplay() {
         Platform.runLater(() -> {
-            // Clear both cards
-            this.playerArea.getChildren().clear();
-            this.dealerArea.getChildren().clear();
-
-            // Update player cards
-            if (model.getPlayerCards() != null) {
-                for (Card card : model.getPlayerCards().getCurrentHand()) {
-                    this.playerArea.getChildren().add(this.view.createCardView(card));
-                }
-            }
-
             // Update dealer cards
-            if (model.getDealerCards() != null) {
-                int index = 0;
-                for (Card card : model.getDealerCards().getCurrentHand()) {
-                    index += 1;
-                    if (model.getDealerCards().getCurrentHand().size() == 2 && index == 2 && model.getGameState() == GameState.PLAYER_TURN) {
-                        // Dealer second card is hidden
-                        this.dealerArea.getChildren().add(this.view.createBackCardView());
-                    }else {
-                        this.dealerArea.getChildren().add(this.view.createCardView(card));
+            if (!this.dealerCardRevealed) {
+                // Deal the initial cards
+                if (!initialDealComplete) {
+                    if (model.getPlayerCards() != null) {
+                        int index = 0;
+                        for (Card card : model.getPlayerCards().getCurrentHand()) {
+                            ImageView cardView = this.view.createCardView(card);
+                            animateCardDeal(cardView, this.playerArea, index);
+                            index++;
+                        }
                     }
+                    // Update dealer cards
+                    if (model.getDealerCards() != null) {
+                        int index = 0;
+                        for (Card card : model.getDealerCards().getCurrentHand()) {
+                            index += 1;
+                            if (model.getDealerCards().getCurrentHand().size() == 2 && index == 2 && model.getGameState() == GameState.PLAYER_TURN) {
+                                ImageView backView = this.view.createBackCardView();
+                                animateCardDeal(backView, this.dealerArea, index);
+                            }else {
+                                ImageView cardView = this.view.createCardView(card);
+                                animateCardDeal(cardView, this.dealerArea, index);
+                            }
+                        }
+                    }
+
+                    initialDealComplete = true;
+                } else {
+                    System.out.println("Initial deal complete. Now hitting...");
+                    // Cards have already been dealt, now we add to player cards
+                    if (model.getPlayerCards() != null) {
+                        List<Card> hand = model.getPlayerCards().getCurrentHand();
+                        for (int i = lastPlayerCardCount; i < hand.size(); i++) {
+                            ImageView cardView = this.view.createCardView(hand.get(i));
+                            animateCardDeal(cardView, this.playerArea, i);
+                        }
+                        lastPlayerCardCount = hand.size();
+                    }
+                }
+            } else {
+                if (model.getDealerCards() != null) {
+                    List<Card> hand = model.getDealerCards().getCurrentHand();
+                    for (int i = lastDealerCardCount; i < hand.size(); i++) {
+                        ImageView cardView = this.view.createCardView(hand.get(i));
+                        animateCardDeal(cardView, this.dealerArea, i);
+                    }
+                    lastDealerCardCount = hand.size();
                 }
             }
         });
@@ -338,15 +488,25 @@ public class GameController {
 
     private void handleGameEnd(GameResult result) {
         balanceAfter = this.model.getPlayerBalance();
-        showAlert("Game over!", getResultMessage(result));
-        // Update player balance
-        handleUpdateBalance();
-        // Clear the cards
-        clearCards();
-        // Reset bet
-        betPlaced = false;
-        // Reset game
-        handleNewGame();
+        Platform.runLater(() -> {
+            showAlert("Game over!", getResultMessage(result));
+            // Update player balance
+            handleUpdateBalance();
+            // Clear the cards
+            clearCards();
+            // Reset bet
+            betPlaced = false;
+            // Reset hidden card
+            dealerCardRevealed = false;
+            // Reset initial deal
+            initialDealComplete = false;
+            // Reset dealer count
+            lastDealerCardCount = 2;
+            // Reset player count
+            lastPlayerCardCount = 2;
+            // Reset game
+            handleNewGame();
+        });
     }
 
     private void clearCards() {
