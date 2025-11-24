@@ -34,22 +34,41 @@ public class GameController {
     private Label balanceLabel;
     private Button hitButton;
     private Button standButton;
+    private Double balanceBefore;
+    private Double balanceAfter;
+    private Button white;
+    private Button red;
+    private Button blue;
+    private Button green;
+    private Button black;
+    private boolean betPlaced;
+    private Button startGameButton;
+    private Bet currentBet;
+    private Label currentBetLabel;
 
     public GameController(Game model, GameFX view) {
         this.model = new Game();
         this.view = view;
     }
 
-    public void initialize(HBox dealerArea, HBox playerArea, Label balanceLabel, Button hitButton, Button standButton) {
+    public void initialize(HBox dealerArea, HBox playerArea, Label balanceLabel, Button hitButton, Button standButton, Button white, Button red, Button blue, Button green, Button black, Button startGameButton, Label currentBetLabel) {
         this.dealerArea = dealerArea;
         this.playerArea = playerArea;
         this.balanceLabel = balanceLabel;
         this.hitButton = hitButton;
         this.standButton = standButton;
+        this.white = white;
+        this.red = red;
+        this.blue = blue;
+        this.green = green;
+        this.black = black;
+        this.betPlaced = false;
+        this.currentBet = new Bet();
+        this.startGameButton = startGameButton;
+        this.currentBetLabel = currentBetLabel;
 
         // Setup event handlers
         setupEventHandlers();
-//        updateButtonStates();
 
         // Start a new game
         handleNewGame();
@@ -59,16 +78,21 @@ public class GameController {
         boolean success = this.model.initializeNewGame();
         if (success) {
             clearCards();
-            // Add a call to the betting logic here
-            System.out.println("Balance before bet: " + this.model.getPlayerBalance());
-            Bet bet = new Bet();
-            bet.addBet(Chips.WHITE, 1);
-            System.out.println("Bet: " + bet);
-            this.model.placeBet(bet);
 
-            System.out.println("Balance after bet: " + this.model.getPlayerBalance());
+            // Re-enable the chips
+            black.setDisable(false);
+            white.setDisable(false);
 
-            handleDeal();
+            // Disable the hit/stand buttons
+            hitButton.setDisable(true);
+            standButton.setDisable(true);
+
+            // Re-enable the start game button
+            startGameButton.setDisable(false);
+
+            betPlaced = false;
+            currentBet = new Bet();
+            currentBetLabel.setText("Current Bet: $");
         } else {
             System.out.println("Unable to start new game...");
         }
@@ -97,7 +121,33 @@ public class GameController {
         if (this.standButton != null) {
             standButton.setOnAction(e -> handleStand());
         }
+
+        if (this.white != null) {
+            white.setOnAction(e -> handlePlaceBet(1));
+        }
+
+        if (this.red != null) {
+            red.setOnAction(e -> handlePlaceBet(5));
+        }
+
+        if (this.blue != null) {
+            blue.setOnAction(e -> handlePlaceBet(10));
+        }
+
+        if (this.green != null) {
+            green.setOnAction(e -> handlePlaceBet(25));
+        }
+
+        if (this.black != null) {
+            black.setOnAction(e -> handlePlaceBet(100));
+        }
+
+
+        if (this.startGameButton != null) {
+            startGameButton.setOnAction(e -> handleStartGame());
+        }
     }
+
 
     private void handleHit() {
         // Call hit through the model
@@ -123,16 +173,63 @@ public class GameController {
         }
     }
 
+    private void handleStartGame() {
+        if (this.currentBet.calculateTotal() > 0) {
+            balanceBefore = this.model.getPlayerBalance();
+            this.model.placeBet(this.currentBet);
+            handleUpdateBalance();
+            betPlaced = true;
+
+            // Disable the chips and start new game
+            black.setDisable(true);
+            white.setDisable(true);
+            startGameButton.setDisable(true);
+
+            // Re-enable the hit/stand buttons
+            hitButton.setDisable(false);
+            standButton.setDisable(false);
+
+            currentBet = new Bet();
+
+            handleDeal();
+        }
+    }
+
     // Handler for each of the different chips
-    private void handlePlaceBet() {
+    private void handlePlaceBet(int denomination) {
+
+        switch (denomination) {
+            case 1:
+                currentBet.addBet(Chips.WHITE, 1);
+                break;
+            case 5:
+                currentBet.addBet(Chips.RED, 1);
+                break;
+            case 10:
+                currentBet.addBet(Chips.BLUE, 1);
+                break;
+            case 25:
+                currentBet.addBet(Chips.GREEN, 1);
+                break;
+            case 100:
+                currentBet.addBet(Chips.BLACK, 1);
+                break;
+            default:
+                break;
+        }
+
+        handleUpdateBalance();
+        int total = currentBet.calculateTotal();
+        currentBetLabel.setText("Current Bet: $" + total);
+
+        betPlaced = true;
     }
 
     private void handleUpdateBalance() {
-        System.out.println(this.model.getPlayerBalance());
         Double newBalance = this.model.getPlayerBalance();
         Platform.runLater(() -> {
             if (balanceLabel != null) {
-                balanceLabel.setText("Current Balance: $" + String.format("%.2f", newBalance));
+                balanceLabel.setText("$" + String.format("%.2f", newBalance));
             }
         });
     }
@@ -182,7 +279,8 @@ public class GameController {
                 output = "Tie game!";
                 break;
             case PLAYER_BLACKJACK:
-                output = "BlackJack! You win!";
+                double payout = balanceAfter - balanceBefore;
+                output = "BlackJack! You win! \n +$" + payout;
                 break;
             case DEALER_BLACKJACK:
                 output = "Dealer BlackJack, you lose.";
@@ -191,10 +289,10 @@ public class GameController {
                 output = "Busted! You lose.";
                 break;
             case DEALER_BUST:
-                output = "Dealer busted! You win!";
+                output = "Dealer busted! You win! \n +$" + (balanceAfter - balanceBefore);
                 break;
             case PLAYER_WIN:
-                output = "You win!";
+                output = "You win! \n +$" + (balanceAfter - balanceBefore);
                 break;
             case DEALER_WIN:
                 output = "Dealer wins, you lose.";
@@ -207,11 +305,14 @@ public class GameController {
     }
 
     private void handleGameEnd(GameResult result) {
+        balanceAfter = this.model.getPlayerBalance();
         showAlert("Game over!", getResultMessage(result));
         // Update player balance
         handleUpdateBalance();
         // Clear the cards
         clearCards();
+        // Reset bet
+        betPlaced = false;
         // Reset game
         handleNewGame();
     }

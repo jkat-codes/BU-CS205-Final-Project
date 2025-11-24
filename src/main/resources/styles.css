@@ -1,39 +1,59 @@
+.main-container {
+    -fx-background-color: #151B3C;
+}
+
 .card-area {
-    -fx-background-color: #6fc391;
-    -fx-border-color: #265c3c;
+    -fx-background-color: #23284E;
+    -fx-border-color: #23284E;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-min-height: 240px;
     -fx-min-width: 340px;
+    -fx-alignment: center;
 }
 
 .balance-view {
     -fx-min-width: 100px;
     -fx-max-width: 175px;
     -fx-min-height: 50px;
-    -fx-border-color: black;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px ;
-    -fx-text-fill: white;
-    -fx-font-size: 10px;
+    -fx-font-size: 25px;
+    -fx-alignment: center;
+    -fx-font-family: sans-serif;
 }
 
-.chips-container {
-    -fx-min-width: 100px;
-    -fx-min-height: 50px;
-    -fx-border-color: red;
-}
 
 .button-container {
-    -fx-border-color: pink;
     -fx-spacing: 20px;
     -fx-alignment: center;
 }
 
-.button {
-    -fx-background-color: yellow;
-    -fx-border-color: black;
-    -fx-border-radius: 5px;
+.choice-button {
+    -fx-min-width: 75px;
+    -fx-max-width: 75px;
     -fx-min-height: 50px;
-    -fx-min-width: 200px;
-    -fx-background-radius: 5px;
+    -fx-max-height: 50px;
+    -fx-text-fill: white;
+    -fx-background-color: #23284E;
+}
+
+.header-container {
+    -fx-min-height: 50px;
+    -fx-max-height: 50px;
+    -fx-background-color: #23284E;
+    -fx-alignment: center;
+    -fx-padding: 20px;
+}
+
+.chips-container {
+    -fx-min-width: 100px;
+    -fx-min-height: 45px;
+    -fx-max-height: 45px;
+    -fx-alignment: center;
+}
+
+.chips-image {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
