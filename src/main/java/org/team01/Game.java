@@ -71,7 +71,11 @@ public class Game {
         }
 
         // Place bet
-        player.placeBet(bet); // Throws an error if amount is greater than balance
+        try {
+            player.placeBet(bet); // Throws an error if amount is greater than balance
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
 
         // Shift state to dealing
         state = GameState.DEALING;

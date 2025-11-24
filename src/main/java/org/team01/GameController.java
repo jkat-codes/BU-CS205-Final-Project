@@ -185,7 +185,11 @@ public class GameController {
     private void handleStartGame() {
         if (this.currentBet.calculateTotal() > 0) {
             balanceBefore = this.model.getPlayerBalance();
-            this.model.placeBet(this.currentBet);
+            if (!this.model.placeBet(this.currentBet)) {
+                showNotEnoughFundsAlert();
+                return;
+            }
+
             handleUpdateBalance();
             betPlaced = true;
 
@@ -214,14 +218,11 @@ public class GameController {
             betPlaced = false;
             handleUpdateBalance();
             currentBetLabel.setText("Current Bet: $");
-
-            System.out.println(this.model.getPlayerBalance());
         }
     }
 
     // Handler for each of the different chips
     private void handlePlaceBet(int denomination) {
-
         switch (denomination) {
             case 1:
                 currentBet.addBet(Chips.WHITE, 1);
@@ -293,6 +294,13 @@ public class GameController {
         alert.setContentText(content);
         alert.showAndWait();
 
+    }
+
+    private void showNotEnoughFundsAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Not enough funds!");
+        alert.setContentText("You do not have enough chips to place this bet! Please adjust your bet.");
+        alert.showAndWait();
     }
 
     private String getResultMessage(GameResult result) {
