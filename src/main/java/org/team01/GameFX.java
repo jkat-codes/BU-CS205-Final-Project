@@ -83,6 +83,7 @@ public class GameFX extends Application {
         // Fill the entire stack pane (root)
         gameContainer.setMaxWidth(Double.MAX_VALUE);
         gameContainer.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(gameContainer, Priority.ALWAYS);
 
         // Create vboxes
         VBox leftContainer = new VBox();
@@ -235,6 +236,7 @@ public class GameFX extends Application {
         );
 
         centerContainer.setAlignment(Pos.CENTER);
+        centerContainer.setSpacing(10);
         centerContainer.getChildren().addAll(
             dealerArea,
             centerSpacer,
