@@ -82,6 +82,9 @@ public class GameController {
             // Re-enable the chips
             black.setDisable(false);
             white.setDisable(false);
+            red.setDisable(false);
+            blue.setDisable(false);
+            green.setDisable(false);
 
             // Disable the hit/stand buttons
             hitButton.setDisable(true);
@@ -183,6 +186,9 @@ public class GameController {
             // Disable the chips and start new game
             black.setDisable(true);
             white.setDisable(true);
+            red.setDisable(true);
+            blue.setDisable(true);
+            green.setDisable(true);
             startGameButton.setDisable(true);
 
             // Re-enable the hit/stand buttons
