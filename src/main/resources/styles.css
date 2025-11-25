@@ -24,6 +24,9 @@
     -fx-font-family: sans-serif;
 }
 
+.balance-label {
+    -fx-font-size: 17px;
+}
 
 .button-container {
     -fx-spacing: 20px;

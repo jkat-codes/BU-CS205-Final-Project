@@ -73,6 +73,7 @@ public class GameFX extends Application {
         // Add balance to header
         Label balanceLabel = new Label("$" + 1000.00);
         balanceLabel.setTextFill(Color.web("white"));
+        balanceLabel.getStyleClass().add("balance-label");
         // Add spacer to force vertically aligned center
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, Priority.ALWAYS);
@@ -179,6 +180,7 @@ public class GameFX extends Application {
         // Create the current bet label
         Label currentBetLabel = new Label("Current Bet: $");
         currentBetLabel.setTextFill(Color.web("white"));
+        currentBetLabel.getStyleClass().add("balance-label");
         // Add the buttons and label to chip container
         chipsContainer.getChildren().addAll(
                 white,
