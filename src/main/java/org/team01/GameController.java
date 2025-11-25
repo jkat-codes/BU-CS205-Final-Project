@@ -488,25 +488,23 @@ public class GameController {
 
     private void handleGameEnd(GameResult result) {
         balanceAfter = this.model.getPlayerBalance();
-        Platform.runLater(() -> {
-            showAlert("Game over!", getResultMessage(result));
-            // Update player balance
-            handleUpdateBalance();
-            // Clear the cards
-            clearCards();
-            // Reset bet
-            betPlaced = false;
-            // Reset hidden card
-            dealerCardRevealed = false;
-            // Reset initial deal
-            initialDealComplete = false;
-            // Reset dealer count
-            lastDealerCardCount = 2;
-            // Reset player count
-            lastPlayerCardCount = 2;
-            // Reset game
-            handleNewGame();
-        });
+        showAlert("Game over!", getResultMessage(result));
+        // Update player balance
+        handleUpdateBalance();
+        // Clear the cards
+        clearCards();
+        // Reset bet
+        betPlaced = false;
+        // Reset hidden card
+        dealerCardRevealed = false;
+        // Reset initial deal
+        initialDealComplete = false;
+        // Reset dealer count
+        lastDealerCardCount = 2;
+        // Reset player count
+        lastPlayerCardCount = 2;
+        // Reset game
+        handleNewGame();
     }
 
     private void clearCards() {
