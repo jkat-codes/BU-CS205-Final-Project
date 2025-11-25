@@ -226,6 +226,9 @@ public class GameFX extends Application {
         HBox buttonArea = new HBox();
         buttonArea.getStyleClass().add("button-container");
 
+        Button doubleButton  = new Button("Double Down ");
+        doubleButton.getStyleClass().add("choice-button");
+
         Button hitButton = new Button("Hit");
         hitButton.getStyleClass().add("choice-button");
 
@@ -233,6 +236,7 @@ public class GameFX extends Application {
         standButton.getStyleClass().add("choice-button");
 
         buttonArea.getChildren().addAll(
+                doubleButton,
                 hitButton,
                 standButton
         );
@@ -253,7 +257,7 @@ public class GameFX extends Application {
         root.getChildren().addAll(background, mainContainer);
 
 
-        controller.initialize(dealerArea, playerArea, balanceLabel, hitButton, standButton, white, red, blue, green, black, newGameButton, currentBetLabel, clearBetButton);
+        controller.initialize(dealerArea, playerArea, balanceLabel, hitButton, standButton, white, red, blue, green, black, newGameButton, currentBetLabel, clearBetButton, doubleButton);
 
         primaryStage.show();
     }
