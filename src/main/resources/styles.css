@@ -34,8 +34,8 @@
 }
 
 .choice-button {
-    -fx-min-width: 75px;
-    -fx-max-width: 75px;
+    -fx-min-width: 100px;
+    -fx-max-width: 100px;
     -fx-min-height: 50px;
     -fx-max-height: 50px;
     -fx-text-fill: white;
@@ -69,6 +69,8 @@
 .bet-btn {
     -fx-min-height: 45px;
     -fx-max-height: 45px;
+    -fx-min-width: 100px;
+    -fx-max-width: 100px;
     -fx-text-fill: white;
     -fx-background-color: #23284E;
 }
