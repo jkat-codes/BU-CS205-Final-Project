@@ -22,6 +22,11 @@ public enum Chips {
 
     private final int chipValue;
 
+    /**
+     * Generate a chip in which its value is determined by chip types under enumerate
+     *
+     * @param chipValue value of chips
+     */
     private Chips(int chipValue) {
         this.chipValue = chipValue;
     }
