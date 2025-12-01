@@ -441,6 +441,7 @@ public class GameController {
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
+        alert.setHeaderText(title);
         alert.setContentText(content);
         alert.showAndWait();
 
@@ -449,6 +450,7 @@ public class GameController {
     private void showNotEnoughFundsAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Not enough funds!");
+        alert.setHeaderText("Not enough funds!");
         alert.setContentText("You do not have enough chips to place this bet! Please adjust your bet.");
         alert.showAndWait();
     }
