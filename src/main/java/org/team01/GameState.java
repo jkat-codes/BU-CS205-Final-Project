@@ -1,5 +1,8 @@
 package org.team01;
 
+/**
+ * Enum representing the possible states of the game
+ */
 public enum GameState {
     MENU,
     BETTING,
