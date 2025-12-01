@@ -257,7 +257,7 @@ public class GameFX extends Application {
         root.getChildren().addAll(background, mainContainer);
 
 
-        controller.initialize(dealerArea, playerArea, balanceLabel, hitButton, standButton, white, red, blue, green, black, newGameButton, currentBetLabel, clearBetButton, doubleButton);
+        controller.initialize(dealerArea, playerArea, balanceLabel, hitButton, standButton, white, red, blue, green, black, newGameButton, currentBetLabel, clearBetButton);
 
         primaryStage.show();
     }
