@@ -30,14 +30,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-
+/**
+ * Class containing the entire UI for the BlackJack game
+ */
 public class GameFX extends Application {
     private HBox dealerArea;
     private HBox playerArea;
     private Game model;
     private GameController controller;
 
-
+    /**
+     * Initializes the entire UI as well as instantiates the GameController (and Game) and passes in all necessary buttons, labels, and views
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         // Start the controller
@@ -266,6 +271,12 @@ public class GameFX extends Application {
         launch(args);
     }
 
+    /**
+     * Function to create the front card view for a normal card
+     *
+     * @param card the Card object that we want to create an ImageView for
+     * @return the CardView of the desired card
+     */
     public ImageView createCardView(Card card) {
         String fullImagePath = "file:" + System.getProperty("user.dir") + "/src/main/java/org/team01/assets/Cards (large)/" + card.getImagePath() + ".png";
         Image cardImage = new Image(fullImagePath);
@@ -278,6 +289,11 @@ public class GameFX extends Application {
         return cardView;
     }
 
+    /**
+     * Function to create the back card view for a flipped card
+     *
+     * @return the CardView of the flipped card
+     */
     public ImageView createBackCardView() {
         String fullImagePath = "file:" + System.getProperty("user.dir") + "/src/main/java/org/team01/assets/Cards (large)/card_back.png";
         Image cardImage = new Image(fullImagePath);
