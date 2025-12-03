@@ -133,9 +133,6 @@ public class Hand {
         return handValue;
     }
 
-    // String representation of entire hand
-    // Represents the Card as a string containing the rank and suit "QUEEN of Hearts"
-
     /**
      * String representation of entire hand
      * Represents the Card as a string containing the rank and suit "QUEEN of Hearts"
@@ -150,12 +147,22 @@ public class Hand {
         return containsAce;
     }
 
+    /**
+     * Returns the number of aces in the current hand
+     *
+     * @return integer representing the number of aces in the hand
+     */
     private int numAcesInHand() {
         return (int) cards.stream()
                 .filter(card -> card.getRank() == FaceValue.ACE)
                 .count();
     }
 
+    /**
+     * Returns a string representation of the hand
+     *
+     * @return String representation of the current hand
+     */
     public String toString() {
         if (cards.isEmpty()) {
             return "[]";
