@@ -32,6 +32,9 @@ import javafx.util.Duration;
 
 import java.util.List;
 
+/**
+ * Class that connects our Game model with our UI Game view
+ */
 public class GameController {
     private Game model;
     private GameFX view;
@@ -59,11 +62,34 @@ public class GameController {
     private int lastPlayerCardCount = 2;
     private boolean initialDealComplete;
 
+    /**
+     * Creates a new GameController object
+     *
+     * @param model the Game model that we are playing with, contains all BlackJack related functions
+     * @param view the UI view that we are using to render our cards, bets, and gameplay
+     */
     public GameController(Game model, GameFX view) {
         this.model = new Game();
         this.view = view;
     }
 
+    /**
+     * Initializes all UI areas and components
+     *
+     * @param dealerArea UI area for dealer cards
+     * @param playerArea UI area for player cards
+     * @param balanceLabel Label showing the player's current balance
+     * @param hitButton Button for player hit
+     * @param standButton Button for player stand
+     * @param white Button for white chip
+     * @param red Button for red chip
+     * @param blue Button for blue chip
+     * @param green Button for green chip
+     * @param black Button for black chip
+     * @param startGameButton Button for placing bet/starting new game
+     * @param currentBetLabel Label showing the player's current bet
+     * @param clearBetButton Button for clearing the player's potential bet (not placed yet)
+     */
     public void initialize(HBox dealerArea, HBox playerArea, Label balanceLabel, Button hitButton, Button standButton, Button white, Button red, Button blue, Button green, Button black, Button startGameButton, Label currentBetLabel, Button clearBetButton) {
         this.dealerArea = dealerArea;
         this.playerArea = playerArea;
@@ -90,6 +116,10 @@ public class GameController {
         handleNewGame();
     }
 
+    /**
+     * Handles a new game, generally called after a game has been completed
+     * Resets button states, cards, and bets
+     */
     private void handleNewGame() {
         boolean success = this.model.initializeNewGame();
         if (success) {
@@ -118,6 +148,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Function to handle dealing the initial cards of the game
+     * Deals, alternating, to player then dealer, the dealers second card is hidden
+     */
     private void handleDeal() {
         // Deal the cards from model
         GameResult result = this.model.dealInitialCards();
@@ -132,7 +166,9 @@ public class GameController {
         }
     }
 
-
+    /**
+     * Function to set up all button event handlers
+     */
     private void setupEventHandlers() {
         if (this.hitButton != null) {
             hitButton.setOnAction(e -> handleHit());
@@ -171,7 +207,10 @@ public class GameController {
         }
     }
 
-
+    /**
+     * Function to handle when the player hits
+     * Adds a card to the player's hand
+     */
     private void handleHit() {
         // Call hit through the model
         int cardsBeforeStand = model.getPlayerCards().getCurrentHand().size();
@@ -193,6 +232,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Function to handle when the player stands
+     * Flips the dealer's card then automatically plays the dealers turn
+     */
     private void handleStand() {
         revealDealerCard();
 
@@ -226,6 +269,10 @@ public class GameController {
 
     }
 
+    /**
+     * Function that handles the start of a new game
+     * Enables/Disables certain buttons allowing certain behaviors during game; shifts state to betting; then deals cards
+     */
     private void handleStartGame() {
         if (this.currentBet.calculateTotal() > 0) {
             balanceBefore = this.model.getPlayerBalance();
@@ -256,6 +303,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Function that clears the player's active bet
+     * Used when a new round is started or when the player wants to bet a different amount BEFORE a new round
+     */
     private void handleClearBet() {
         if (this.currentBet.calculateTotal() > 0) {
             currentBet = new Bet();
@@ -265,7 +316,11 @@ public class GameController {
         }
     }
 
-    // Handler for each of the different chips
+    /**
+     * Function that handles the player placing a bet
+     *
+     * @param denomination the desired amount that the user wants to bet
+     */
     private void handlePlaceBet(int denomination) {
         switch (denomination) {
             case 1:
@@ -294,6 +349,9 @@ public class GameController {
         betPlaced = true;
     }
 
+    /**
+     * Function that updates the label that shows the player's balance
+     */
     private void handleUpdateBalance() {
         Double newBalance = this.model.getPlayerBalance();
         Platform.runLater(() -> {
@@ -303,6 +361,13 @@ public class GameController {
         });
     }
 
+    /**
+     * Function that animates the dealing of the cards (slide in from right to left)
+     *
+     * @param cardView the ImageView of the card being animated
+     * @param area the desired UI location where we want the card to be dealt/placed
+     * @param cardIndex the index of the card being dealt, used to delay the cards being dealt
+     */
     private void animateCardDeal(ImageView cardView, HBox area, int cardIndex) {
         cardView.setTranslateX(200);
         cardView.setTranslateY(0);
@@ -323,6 +388,13 @@ public class GameController {
         dealAnimation.play();
     }
 
+    /**
+     * Function that animates the flipping of the dealer's hidden card
+     *
+     * @param hiddenCard the ImageView of the hiddenCard
+     * @param actualCard the Card representation of the hiddenCard
+     * @param area the UI area in which the card/hidden card is contained
+     */
     private void flipCard(ImageView hiddenCard, Card actualCard, HBox area) {
         ImageView newCardView = this.view.createCardView(actualCard);
         newCardView.setScaleX(0);
@@ -366,6 +438,9 @@ public class GameController {
         flipOut.play();
     }
 
+    /**
+     * Function that reveals the dealers card, with flip and highlight animation(s)
+     */
     private void revealDealerCard() {
         Platform.runLater(() -> {
             for (Node node: dealerArea.getChildren()) {
@@ -383,6 +458,10 @@ public class GameController {
         });
     }
 
+    /**
+     * Function that updates the UI for both the player and dealer card areas
+     * If the dealer has only 2 cards, the first will be revealed and the second will be flipped
+     */
     private void updateCardDisplay() {
         Platform.runLater(() -> {
             // Update dealer cards
@@ -438,6 +517,12 @@ public class GameController {
         });
     }
 
+    /**
+     * General function to show an alert with title and content
+     *
+     * @param title the title of the desired alert
+     * @param content the content of the desired alert
+     */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -447,6 +532,9 @@ public class GameController {
 
     }
 
+    /**
+     * Shows an alert warning the user that they do not have enough funds
+     */
     private void showNotEnoughFundsAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Not enough funds!");
@@ -455,6 +543,12 @@ public class GameController {
         alert.showAndWait();
     }
 
+    /**
+     * Gets a result message based on the outcome of the game i.e. win/loss/tie messaage
+     *
+     * @param result the GameResult of the current game
+     * @return String representation of the outcome of the game
+     */
     private String getResultMessage(GameResult result) {
         String output = "";
         switch (result) {
@@ -488,6 +582,11 @@ public class GameController {
         return output;
     }
 
+    /**
+     * Handles the ending of the current game
+     *
+     * @param result the GameResult of the current game, used to get a state relative finishing message
+     */
     private void handleGameEnd(GameResult result) {
         balanceAfter = this.model.getPlayerBalance();
         showAlert("Game over!", getResultMessage(result));
@@ -509,6 +608,9 @@ public class GameController {
         handleNewGame();
     }
 
+    /**
+     * Clears all cards from dealer area and player area (removes them from the UI)
+     */
     private void clearCards() {
         Platform.runLater(() -> {
             this.dealerArea.getChildren().clear();
