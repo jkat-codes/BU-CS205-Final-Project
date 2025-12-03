@@ -99,7 +99,7 @@ def createJavaFXTask(String taskName, String description, String mainClassName) 
         }
     }
 }
-createJavaFXTask('runGame', 'Runs the application', 'org.team01.GameFX')
+createJavaFXTask('runGame', 'Runs the application', 'org.team01.view.GameFX')
 createJavaFXTask('runHelloFX', 'Runs the HelloFX application', 'hw.HelloFX')
 //createJavaFXTask('runHelloMain', 'Runs the HelloMain application', 'hw.HelloMain')
 //createJavaFXTask('runStockVisualizerApp', 'Runs the StockVisualizerApp application', 'hw.StockVisualizerApp')
