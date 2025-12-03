@@ -36,7 +36,7 @@ public class BetTest {
         assertTrue(bet.getChips().isEmpty());
 
         bet.addBet(Chips.GREEN,5); // 25 * 5 = 125
-        bet.addBet(Chips.BLACK, 3); // 100 * 3 = 300
+        bet.addBet(Chips.GOLD, 3); // 100 * 3 = 300
         bet.addBet(Chips.RED, 3); // 5 * 3 = 15
         // Total = 440
 
@@ -51,7 +51,7 @@ public class BetTest {
     void testcalculateTotal() {
         assertEquals(0, bet.calculateTotal());
 
-        bet.addBet(Chips.BLACK, 3); // 100 * 3 = 300
+        bet.addBet(Chips.GOLD, 3); // 100 * 3 = 300
         bet.addBet(Chips.BLUE, 2); // 10 * 2 = 20
         // Total = 320
 
@@ -60,7 +60,7 @@ public class BetTest {
 
     @Test
     void testresetBet() {
-        bet.addBet(Chips.BLACK, 3); // 100 * 3 = 300
+        bet.addBet(Chips.GOLD, 3); // 100 * 3 = 300
         bet.addBet(Chips.BLUE, 2); // 10 * 2 = 20
         // Total = 320
 
@@ -71,13 +71,13 @@ public class BetTest {
 
     @Test
     void testgetChips() {
-        bet.addBet(Chips.BLACK, 3); // 100 * 3 = 300
+        bet.addBet(Chips.GOLD, 3); // 100 * 3 = 300
         bet.addBet(Chips.BLUE, 2); // 10 * 2 = 20
         // Total = 320
 
         Map<Chips, Integer> chips = bet.getChips();
 
-        assertEquals(3, (int) chips.get(Chips.BLACK));
+        assertEquals(3, (int) chips.get(Chips.GOLD));
         assertEquals(2, (int) chips.get(Chips.BLUE));
 
         assertFalse(chips.containsKey(Chips.RED));
