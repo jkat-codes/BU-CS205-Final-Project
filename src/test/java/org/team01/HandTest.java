@@ -91,9 +91,9 @@ public class HandTest {
         assertFalse(hand.isBust());
         assertEquals(17, hand.getHandValue());
 
+        // Add an ace, automatically changes to 18
         hand.addCardToHand(card4);
-        assertEquals(28, hand.getHandValue());
-        assertTrue(hand.isBust());
+        assertEquals(18, hand.getHandValue());
     }
 
     @Test
@@ -132,8 +132,9 @@ public class HandTest {
         assertEquals(7, hand.getHandValue());
 
         hand.addCardToHand(card3);
+        // Add an ace, automatically converts to 1 from 11
         hand.addCardToHand(card4);
-        assertEquals(28, hand.getHandValue());
+        assertEquals(18, hand.getHandValue());
 
         hand.clearHand();
         assertEquals(-1, hand.getHandValue());

@@ -67,6 +67,9 @@ public class Card {
         return this.rank;
     }
 
+    /**
+     * Sets the image path based on the Card's numerical and face value
+     */
     private void setImagePath() {
         String suit = this.suit.toString().substring(0, 1);
         String path;
@@ -92,6 +95,11 @@ public class Card {
         this.imagePath = path;
     }
 
+    /**
+     * Gets the image path
+     *
+     * @return String representation of the image path
+     */
     public String getImagePath() {
         return this.imagePath;
     }
