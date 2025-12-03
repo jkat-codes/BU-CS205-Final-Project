@@ -47,14 +47,14 @@ public class PlayerTest {
 
     @Test
     public void testplaceBet() throws IllegalArgumentException {
-        bet.addBet(Chips.BLACK, 2); // Sum: 100 * 2 = 200
+        bet.addBet(Chips.GOLD, 2); // Sum: 100 * 2 = 200
         bet.addBet(Chips.BLUE, 1);  // Sum: 10 * 1 = 10
         player.placeBet(bet);
         assertEquals(790,player.getCurrentBalance());
 
         player.resetHand();
 
-        bet.addBet(Chips.BLACK, 8); // Sum: 100 * 8 = 800
+        bet.addBet(Chips.GOLD, 8); // Sum: 100 * 8 = 800
         //Total: 1100
 
         assertThrows(IllegalArgumentException.class, () -> player.placeBet(bet));
@@ -66,7 +66,7 @@ public class PlayerTest {
         assertNull(player.getCurrentBet());
 
         // Check if currentBet amount changes after bet is placed
-        bet.addBet(Chips.BLACK, 2); // Sum: 100 * 2 = 200
+        bet.addBet(Chips.GOLD, 2); // Sum: 100 * 2 = 200
         bet.addBet(Chips.BLUE, 1);  // Sum: 10 * 1 = 10
 
         player.placeBet(bet);
@@ -84,7 +84,7 @@ public class PlayerTest {
         assertFalse(player.payPlayer(1));
 
         // Test payout with a tie (push)
-        bet.addBet(Chips.BLACK,3); // 100 * 3 = 300
+        bet.addBet(Chips.GOLD,3); // 100 * 3 = 300
         bet.addBet(Chips.GREEN,8); // 25 * 8 = 200
         // Total bet amount = 500
         // Current balance = 500

@@ -9,7 +9,7 @@ package org.team01;
  * - RED: red-colored chip which its value is $5
  * - BLUE: blue-colored chip which its value is $10
  * - GREEN: green-colored chip which its value is $25
- * - BLACK: black-colored chip which its value is $100
+ * - GOLD: gold-colored chip which its value is $100
  *
  */
 public enum Chips {
@@ -17,7 +17,7 @@ public enum Chips {
     RED(5),
     BLUE(10),
     GREEN(25),
-    BLACK(100);
+    GOLD(100);
 
 
     private final int chipValue;
