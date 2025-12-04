@@ -115,7 +115,6 @@ public class Hand {
             return -1;
         }
 
-        System.out.println("Get hand value called");
 
         // Add all card values
         int handValue = 0;
@@ -129,7 +128,6 @@ public class Hand {
             }
         }
 
-        System.out.println("Hand value: " + handValue);
         return handValue;
     }
 
