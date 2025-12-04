@@ -301,7 +301,27 @@ public class GameController {
             currentBet = new Bet();
 
             handleDeal();
+
+            // Check if the player's balance is 0 after the result
+            if (this.model.getPlayerBalance() <= 0) {
+                showGameOverAlert();
+            }
+
+            //Disable all controls after bankrupt
+            gold.setDisable(true);
+            white.setDisable(true);
+            red.setDisable(true);
+            blue.setDisable(true);
+            green.setDisable(true);
+            startGameButton.setDisable(true);
+            clearBetButton.setDisable(true);
+            hitButton.setDisable(true);
+            standButton.setDisable(true);
         }
+    }
+
+    private void handleEndGame() {
+
     }
 
     /**
@@ -540,6 +560,16 @@ public class GameController {
         alert.setTitle("Not enough funds!");
         alert.setHeaderText("Not enough funds!");
         alert.setContentText("You do not have enough chips to place this bet! Please adjust your bet.");
+        alert.showAndWait();
+    }
+
+    /**
+     * Shows an alert warning the user that they ran out of balance to continue the game
+     */
+    private void showGameOverAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Game Over! You Lost.");
+        alert.setContentText("You do not have enough balance to place bet! Restart the game to continue.");
         alert.showAndWait();
     }
 

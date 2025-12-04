@@ -15,7 +15,7 @@
  * ****************************************
  */
 
-package org.team01;
+package org.team01.view;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -29,6 +29,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.team01.Card;
+import org.team01.Game;
+import org.team01.controller.GameController;
 
 /**
  * Class containing the entire UI for the BlackJack game
