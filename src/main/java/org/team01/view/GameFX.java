@@ -244,7 +244,6 @@ public class GameFX extends Application {
         standButton.getStyleClass().add("choice-button");
 
         buttonArea.getChildren().addAll(
-                doubleButton,
                 hitButton,
                 standButton
         );
