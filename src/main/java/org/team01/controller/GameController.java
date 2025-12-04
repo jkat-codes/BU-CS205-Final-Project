@@ -15,7 +15,7 @@
  * ****************************************
  */
 
-package org.team01;
+package org.team01.controller;
 
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -29,6 +29,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import org.team01.*;
+import org.team01.view.GameFX;
 
 import java.util.List;
 
@@ -155,7 +157,6 @@ public class GameController {
     private void handleDeal() {
         // Deal the cards from model
         GameResult result = this.model.dealInitialCards();
-        System.out.println("Result after deal: " + result);
         // Update the cards to display the cards
         updateCardDisplay();
 
@@ -493,7 +494,6 @@ public class GameController {
 
                     initialDealComplete = true;
                 } else {
-                    System.out.println("Initial deal complete. Now hitting...");
                     // Cards have already been dealt, now we add to player cards
                     if (model.getPlayerCards() != null) {
                         List<Card> hand = model.getPlayerCards().getCurrentHand();
