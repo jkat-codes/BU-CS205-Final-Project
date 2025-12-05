@@ -15,7 +15,7 @@
  * ****************************************
  */
 
-package org.team01;
+package org.team01.controller;
 
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -29,6 +29,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import org.team01.*;
+import org.team01.view.GameFX;
 
 import java.util.List;
 
@@ -51,7 +53,7 @@ public class GameController {
     private Button red;
     private Button blue;
     private Button green;
-    private Button black;
+    private Button gold;
     private boolean betPlaced;
     private Button startGameButton;
     private Bet currentBet;
@@ -85,12 +87,12 @@ public class GameController {
      * @param red Button for red chip
      * @param blue Button for blue chip
      * @param green Button for green chip
-     * @param black Button for black chip
+     * @param gold Button for gold chip
      * @param startGameButton Button for placing bet/starting new game
      * @param currentBetLabel Label showing the player's current bet
      * @param clearBetButton Button for clearing the player's potential bet (not placed yet)
      */
-    public void initialize(HBox dealerArea, HBox playerArea, Label balanceLabel, Button hitButton, Button standButton, Button white, Button red, Button blue, Button green, Button black, Button startGameButton, Label currentBetLabel, Button clearBetButton) {
+    public void initialize(HBox dealerArea, HBox playerArea, Label balanceLabel, Button hitButton, Button standButton, Button white, Button red, Button blue, Button green, Button gold, Button startGameButton, Label currentBetLabel, Button clearBetButton) {
         this.dealerArea = dealerArea;
         this.playerArea = playerArea;
         this.balanceLabel = balanceLabel;
@@ -100,7 +102,7 @@ public class GameController {
         this.red = red;
         this.blue = blue;
         this.green = green;
-        this.black = black;
+        this.gold = gold;
         this.betPlaced = false;
         this.currentBet = new Bet();
         this.startGameButton = startGameButton;
@@ -126,7 +128,7 @@ public class GameController {
             clearCards();
 
             // Re-enable the chips
-            black.setDisable(false);
+            gold.setDisable(false);
             white.setDisable(false);
             red.setDisable(false);
             blue.setDisable(false);
@@ -155,7 +157,6 @@ public class GameController {
     private void handleDeal() {
         // Deal the cards from model
         GameResult result = this.model.dealInitialCards();
-        System.out.println("Result after deal: " + result);
         // Update the cards to display the cards
         updateCardDisplay();
 
@@ -194,8 +195,8 @@ public class GameController {
             green.setOnAction(e -> handlePlaceBet(25));
         }
 
-        if (this.black != null) {
-            black.setOnAction(e -> handlePlaceBet(100));
+        if (this.gold != null) {
+            gold.setOnAction(e -> handlePlaceBet(100));
         }
 
         if (this.startGameButton != null) {
@@ -285,7 +286,7 @@ public class GameController {
             betPlaced = true;
 
             // Disable the chips and start new game
-            black.setDisable(true);
+            gold.setDisable(true);
             white.setDisable(true);
             red.setDisable(true);
             blue.setDisable(true);
@@ -300,7 +301,27 @@ public class GameController {
             currentBet = new Bet();
 
             handleDeal();
+
+            // Check if the player's balance is 0 after the result
+            if (this.model.getPlayerBalance() <= 0) {
+                showGameOverAlert();
+            }
+
+            //Disable all controls after bankrupt
+            gold.setDisable(true);
+            white.setDisable(true);
+            red.setDisable(true);
+            blue.setDisable(true);
+            green.setDisable(true);
+            startGameButton.setDisable(true);
+            clearBetButton.setDisable(true);
+            hitButton.setDisable(true);
+            standButton.setDisable(true);
         }
+    }
+
+    private void handleEndGame() {
+
     }
 
     /**
@@ -336,7 +357,7 @@ public class GameController {
                 currentBet.addBet(Chips.GREEN, 1);
                 break;
             case 100:
-                currentBet.addBet(Chips.BLACK, 1);
+                currentBet.addBet(Chips.GOLD, 1);
                 break;
             default:
                 break;
@@ -493,7 +514,6 @@ public class GameController {
 
                     initialDealComplete = true;
                 } else {
-                    System.out.println("Initial deal complete. Now hitting...");
                     // Cards have already been dealt, now we add to player cards
                     if (model.getPlayerCards() != null) {
                         List<Card> hand = model.getPlayerCards().getCurrentHand();
@@ -540,6 +560,16 @@ public class GameController {
         alert.setTitle("Not enough funds!");
         alert.setHeaderText("Not enough funds!");
         alert.setContentText("You do not have enough chips to place this bet! Please adjust your bet.");
+        alert.showAndWait();
+    }
+
+    /**
+     * Shows an alert warning the user that they ran out of balance to continue the game
+     */
+    private void showGameOverAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Game Over! You Lost.");
+        alert.setContentText("You do not have enough balance to place bet! Restart the game to continue.");
         alert.showAndWait();
     }
 
