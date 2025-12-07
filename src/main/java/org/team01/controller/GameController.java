@@ -301,22 +301,6 @@ public class GameController {
             currentBet = new Bet();
 
             handleDeal();
-
-            // Check if the player's balance is 0 after the result
-            if (this.model.getPlayerBalance() <= 0) {
-                showGameOverAlert();
-            }
-
-            //Disable all controls after bankrupt
-            gold.setDisable(true);
-            white.setDisable(true);
-            red.setDisable(true);
-            blue.setDisable(true);
-            green.setDisable(true);
-            startGameButton.setDisable(true);
-            clearBetButton.setDisable(true);
-            hitButton.setDisable(true);
-            standButton.setDisable(true);
         }
     }
 

@@ -54,7 +54,7 @@ public class GameFX extends Application {
 
         StackPane root = new StackPane();
         Scene scene = new Scene(root, 1000, 550);
-        String css = getClass().getResource("/styles.css").toExternalForm();
+        String css = getClass().getResource("/css/styles.css").toExternalForm();
         scene.getStylesheets().add(css);
         primaryStage.setTitle("BlackJack");
         primaryStage.setScene(scene);
