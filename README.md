@@ -9,35 +9,47 @@ This repository contains all work for CSCI 205 Final Project at Bucknell Univers
 ## Team Information
 Team name: team01
 
+
 Team members
 1. Finnian Franks: Developer
 2. Christine Kang: Product Owner
 3. Jasper Katalevsky: Scrum Master
 4. Sanda Tan: Developer
 ## Project Summary
-A couple of paragraphs summarizing what this project is.  
+
+
+Blackjack is one of the most popular card games in the world, and while there are digital casinos and places to play games like Blackjack, they are often too closely tied with real gambling platforms or have too many ads that may be uncomfortable or annoying. This is a JavaFX based Blackjack game built for the casual user who wants a non-web based Blackjack game that simulates the excitement of the casino but can be played safely from home. It’s a no-stakes, fun environment to learn the basic rules, get practice, or kill some time.
+
+
 ## Package Structure
 
-Main folder structure: csci205_final_project/scr/main/java
 
-org.team01:
+Main folder structure: csci205_final_project/src/main/java
+
+	org.team01 - basic classes and enums (part of model)
+	org.team01.controller - connects game model with UI Game view
+	org.team01.view - the UI and runnable application
 
 Resource folder structure: csci205_final_project/scr/main/resources
 
-team01: CSS file for Blackjack
+
+	assets - all resources for the project including png files of chips, cards, etc.
+    css - styles.css
+
 
 Test folder structure: csci205_final_project/scr/test/java
 
-org.team01: Test files for all classes
+    org.team01: Test files for all classes
+
+
 
 
 3rd Party Libraries
 
+    JavaFX: version 21(https://openjfx.io/javadoc/21/)
 
-Explanation of your package structure
 
-List of all 3rd party libraries you used that are not part of the standard Java API (Yes, you
-should include JavaFX here). Include version numbers of all libraries and URLs on the
-main page of the library.
+
+
 ## Presentation
-Information about your presentation (more details to follow)
+This project is presented as a part of CSCI 205 class presentation on 12/08/2025 in the DANA Computer Lab.
