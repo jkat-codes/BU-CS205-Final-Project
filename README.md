@@ -26,7 +26,7 @@ Blackjack is one of the most popular card games in the world, and while there ar
 
 Main folder structure: csci205_final_project/src/main/java
 
-	org.team01 - basic classes and enums (part of model)
+	org.team01.view - basic classes and enums (part of model)
 	org.team01.controller - connects game model with UI Game view
 	org.team01.view - the UI and runnable application
 
