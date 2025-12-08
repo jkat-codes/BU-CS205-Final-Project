@@ -19,14 +19,16 @@ package org.team01;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.team01.model.Card;
+import org.team01.model.Dealer;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.team01.FaceValue.*;
-import static org.team01.FaceValue.ACE;
-import static org.team01.Suit.*;
-import static org.team01.Suit.DIAMONDS;
+import static org.team01.model.FaceValue.*;
+import static org.team01.model.FaceValue.ACE;
+import static org.team01.model.Suit.*;
+import static org.team01.model.Suit.DIAMONDS;
 
 public class DealerTest {
 

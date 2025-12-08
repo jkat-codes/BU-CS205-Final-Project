@@ -15,7 +15,7 @@
  * ****************************************
  */
 
-package org.team01;
+package org.team01.model;
 
 /**
  * Represents a single playing card from a standard deck of cards

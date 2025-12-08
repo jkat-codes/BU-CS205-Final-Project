@@ -19,6 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.team01.model.Card;
+import org.team01.model.FaceValue;
+import org.team01.model.Suit;
 
 public class CardTest {
     private Card card1;

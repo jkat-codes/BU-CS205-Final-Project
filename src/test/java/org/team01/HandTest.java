@@ -18,14 +18,15 @@
 package org.team01;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.team01.model.Card;
+import org.team01.model.Hand;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.team01.FaceValue.*;
-import static org.team01.Suit.*;
+import static org.team01.model.FaceValue.*;
+import static org.team01.model.Suit.*;
 
 public class HandTest {
 

@@ -1,4 +1,4 @@
-package org.team01;
+package org.team01.model;
 
 /**
  * An enumerated type that defines the type of the cards (number of face)

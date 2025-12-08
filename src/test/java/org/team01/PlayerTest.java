@@ -20,13 +20,13 @@ package org.team01;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.team01.model.Bet;
+import org.team01.model.Chips;
+import org.team01.model.Player;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.team01.Suit.*;
 
 
 public class PlayerTest {

@@ -1,4 +1,4 @@
-package org.team01;
+package org.team01.model;
 
 /**
  * Enum representing the possible states of the game

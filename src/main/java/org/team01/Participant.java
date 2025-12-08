@@ -17,6 +17,9 @@
 
 package org.team01;
 
+import org.team01.model.Card;
+import org.team01.model.Hand;
+
 /**
  * A parent class of participant that will be implemented with dealer and player
  */

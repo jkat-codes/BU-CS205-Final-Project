@@ -1,4 +1,4 @@
-package org.team01;
+package org.team01.model;
 
 /**
  * An enumerated type that defines color and value of Chips that player has

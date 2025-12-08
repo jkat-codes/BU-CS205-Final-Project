@@ -29,7 +29,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import org.team01.*;
+import org.team01.model.*;
 import org.team01.view.GameFX;
 
 import java.util.List;

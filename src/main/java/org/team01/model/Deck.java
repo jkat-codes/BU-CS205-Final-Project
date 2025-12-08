@@ -15,7 +15,7 @@
  * ****************************************
  */
 
-package org.team01;
+package org.team01.model;
 
 
 import java.util.*;

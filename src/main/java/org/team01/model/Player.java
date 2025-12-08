@@ -15,10 +15,9 @@
  * ****************************************
  */
 
-package org.team01;
+package org.team01.model;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import org.team01.Participant;
 
 /**
  * Represent a player, who can place bet to gain or lose their given balance from game

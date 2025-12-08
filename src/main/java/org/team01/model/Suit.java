@@ -1,4 +1,4 @@
-package org.team01;
+package org.team01.model;
 
 public enum Suit {
     HEARTS("Hearts"),

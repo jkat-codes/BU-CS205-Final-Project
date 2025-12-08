@@ -15,9 +15,7 @@
  * ****************************************
  */
 
-package org.team01;
-import java.util.List;
-import java.util.Scanner;
+package org.team01.model;
 
 /**
  * Class representing a game of blackjack

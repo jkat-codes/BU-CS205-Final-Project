@@ -1,4 +1,4 @@
-package org.team01;
+package org.team01.model;
 
 /**
  * An enumerated type that defines different results from the blackjack game

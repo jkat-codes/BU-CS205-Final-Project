@@ -15,7 +15,9 @@
  * ****************************************
  */
 
-package org.team01;
+package org.team01.model;
+
+import org.team01.Participant;
 
 /**
  * Representation of a dealer. Has a hand that came be played according to dealer rules.

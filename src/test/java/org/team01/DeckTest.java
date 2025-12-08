@@ -1,8 +1,11 @@
 package org.team01;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.team01.model.Card;
+import org.team01.model.Deck;
+import org.team01.model.FaceValue;
+import org.team01.model.Suit;
 
 import java.util.ArrayList;
 import java.util.List;
