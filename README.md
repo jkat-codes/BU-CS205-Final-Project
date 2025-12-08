@@ -49,7 +49,9 @@ Test folder structure: csci205_final_project/scr/test/java
     JavaFX: version 21(https://openjfx.io/javadoc/21/)
 
 
+## Run Instruction
 
+    Type ./gradlew runGame in the terminal.
 
 ## Presentation
-This project is presented as a part of CSCI 205 class presentation on 12/08/2025 in the DANA Computer Lab.
+    This project is presented as a part of CSCI 205 class presentation on 12/08/2025 in the DANA Computer Lab.
